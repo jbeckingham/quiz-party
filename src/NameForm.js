@@ -15,8 +15,9 @@ class NameForm extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.socket.emit("join", {name: this.state.value});
     event.preventDefault();
+    console.log(this.state.value)
+    this.props.handleSubmit(this.state.value)
   }
 
   render() {

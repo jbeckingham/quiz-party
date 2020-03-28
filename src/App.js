@@ -11,18 +11,25 @@ class App extends Component {
         super();
         this.state = {
             myName: "",
+            joined: false,
             question: {
                 text: '',
             },
-            gameState: {},
+            gameState: {
+                players: []
+            },
             response: 0,
             socket: socketIOClient("http://127.0.0.1:5000")
         }
+
+        this.onNameSubmitted =  this.onNameSubmitted.bind(this)
     }
 
     componentDidMount() {
-        //Listen for data on the "outgoing data" namespace and supply a callback for what to do when we get one. In this case, we set a state variable
-        this.state.socket.on("stateUpdated", data => this.setState({gameState: data}) );
+        this.state.socket.on("stateUpdated", gameState => {
+            console.log('state updated:', gameState)
+            this.setState({gameState: gameState})
+        })
     }
 
     setGameState(serverState) {
@@ -31,11 +38,20 @@ class App extends Component {
         }));
     }
 
+    onNameSubmitted(name) {
+        this.state.socket.emit("join", {name: name})
+        this.setState({
+            myName: name,
+            joined: true
+        })
+    
+    }
+
     render() {
         const {response} = this.state;
 
-        if (this.state.myName == "") {
-            return <NameForm socket={this.state.socket}></NameForm>
+        if (!this.state.joined) {
+            return <NameForm handleSubmit={this.onNameSubmitted}/>
         }
         else {
             return (
@@ -44,7 +60,7 @@ class App extends Component {
                      <h1>Quiz Party</h1>
                   </header>
                   <div>
-                        <Players players={this.state.gameState.players}> </Players>
+                        <Players players={this.state.gameState.players}/>
                   </div>
                 </div>
             );
