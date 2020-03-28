@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class QuestionForm extends React.Component {
+class AnswerForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: ''};
@@ -22,7 +22,6 @@ class QuestionForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Question:
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
@@ -31,4 +30,4 @@ class QuestionForm extends React.Component {
   }
 }
 
-export default QuestionForm;
+export default AnswerForm;

@@ -5,8 +5,8 @@ import 'semantic-ui-css/semantic.min.css'
 import Players from './Players';
 import QuestionForm from './QuestionForm';
 import NameForm from './NameForm';
+import AnswerForm from './AnswerForm';
 import { Grid, GridColumn } from 'semantic-ui-react'
-
 
 class App extends Component {
 
@@ -15,22 +15,25 @@ class App extends Component {
         this.state = {
             myName: "",
             joined: false,
-            question: {
-                text: '',
-            },
             gameState: {
-                players: []
+                players: [],
+                question: {
+                    text: "",
+                    name: "",
+                    answers: {}
+                }
             },
             response: 0,
             socket: socketIOClient("http://127.0.0.1:5000")
         }
 
         this.onNameSubmitted =  this.onNameSubmitted.bind(this)
+        this.onQuestionSubmitted =  this.onQuestionSubmitted.bind(this)
+        this.onAnswerSubmitted =  this.onQuestionSubmitted.bind(this)
     }
 
     componentDidMount() {
         this.state.socket.on("stateUpdated", gameState => {
-            console.log('state updated:', gameState)
             this.setState({gameState: gameState})
         })
     }
@@ -47,30 +50,60 @@ class App extends Component {
             myName: name,
             joined: true
         })
-    
+    }
+
+    onQuestionSubmitted(question) {
+        this.state.socket.emit("ask", {name: this.state.myName, text: question});
+    }
+
+    onAnswerSubmitted(answer) {
+        this.state.socket.emit("answer", {name: this.state.myName, answer: answer})
     }
 
     render() {
         const {response} = this.state;
-
-        if (!this.state.joined) {
-            return <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                        <GridColumn>
-                            <NameForm handleSubmit={this.onNameSubmitted}/>
-                        </GridColumn>
-                    </Grid>
-        }
-        else {
-            return (
-                <div className="App">
-                  <header className="App-header">
-                     <h1>Quiz Party</h1>
-                  </header>
-                  <div>
-                        <Players players={this.state.gameState.players}/>
-                  </div>
-                </div>
-            );
+        if (this.state.gameState){
+            if (!this.state.joined) {
+                return <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                            <GridColumn>
+                                <NameForm handleSubmit={this.onNameSubmitted}/>
+                            </GridColumn>
+                        </Grid>
+            }
+            else {
+                let body;
+                if (this.state.gameState.question.text != "") {
+                    if (this.state.gameState.question.name == this.state.myName) {
+                        body = <p>Waiting for answers...</p>
+                    }
+                    else {
+                    body = 
+                        <div>
+                            <p>{this.state.gameState.question.name} asked a question:</p>
+                            <p>{this.state.gameState.question.text}</p>
+                            <p>Your Answer:</p>
+                            <AnswerForm handleSubmit={this.onAnswerSubmitted}/>
+                        </div>
+                    }
+                }
+                else {
+                    body =                   
+                        <div>
+                            <QuestionForm handleSubmit={this.onQuestionSubmitted}/>
+                        </div>
+                }
+                return (
+                    <div className="App">
+                        <header className="App-header">
+                            <h1>Quiz Party</h1>
+                        </header>
+                        <div>
+                            <Players players={this.state.gameState.players}/>
+                        </div>
+                        {body}
+                    </div>
+                );
+            }
         }
     }
 }
