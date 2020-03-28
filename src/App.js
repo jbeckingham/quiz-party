@@ -3,52 +3,52 @@ import socketIOClient from "socket.io-client";
 import './App.css';
 import Players from './Players';
 import QuestionForm from './QuestionForm';
+import NameForm from './NameForm';
 
 class App extends Component {
 
     constructor() {
         super();
         this.state = {
-            players: [{
-                name: 'Jen',
-                score: '10'
-            },
-            {
-                name: 'James',
-                score: '-4000'
-            }],
+            myName: "",
             question: {
                 text: '',
             },
+            gameState: {},
             response: 0,
-            endpoint: "http://127.0.0.1:5000"
+            socket: socketIOClient("http://127.0.0.1:5000")
         }
     }
 
     componentDidMount() {
-        const {endpoint} = this.state;
-        //Very simply connect to the socket
-        const socket = socketIOClient(endpoint);
         //Listen for data on the "outgoing data" namespace and supply a callback for what to do when we get one. In this case, we set a state variable
-        socket.on("outgoing data", data => this.setState({response: data.num}));
+        this.state.socket.on("stateUpdated", data => this.setState({gameState: data}) );
+    }
+
+    setGameState(serverState) {
+        this.setState(state => ({
+            gameState: serverState
+        }));
     }
 
     render() {
         const {response} = this.state;
 
-        return (
-        <div className="App">
-          <header className="App-header">
-             <h1>Quiz Party</h1>
-          </header>
-          <div>
-                <Players players={this.state.players}> </Players>
-          </div>
-          <div>
-                <QuestionForm> </QuestionForm>
-          </div>
-        </div>
-        );
+        if (this.state.myName == "") {
+            return <NameForm socket={this.state.socket}></NameForm>
+        }
+        else {
+            return (
+                <div className="App">
+                  <header className="App-header">
+                     <h1>Quiz Party</h1>
+                  </header>
+                  <div>
+                        <Players players={this.state.gameState.players}> </Players>
+                  </div>
+                </div>
+            );
+        }
     }
 }
 
