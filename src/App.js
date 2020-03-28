@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import socketIOClient from "socket.io-client";
 import './App.css';
+import 'semantic-ui-css/semantic.min.css'
 import Players from './Players';
 import QuestionForm from './QuestionForm';
 import NameForm from './NameForm';
+import { Grid, GridColumn } from 'semantic-ui-react'
+
 
 class App extends Component {
 
@@ -51,7 +54,11 @@ class App extends Component {
         const {response} = this.state;
 
         if (!this.state.joined) {
-            return <NameForm handleSubmit={this.onNameSubmitted}/>
+            return <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                        <GridColumn>
+                            <NameForm handleSubmit={this.onNameSubmitted}/>
+                        </GridColumn>
+                    </Grid>
         }
         else {
             return (

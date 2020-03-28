@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import socketIOClient from "socket.io-client";
+import React from 'react'
+import { Input, Button, Form } from 'semantic-ui-react'
 
 class NameForm extends React.Component {
   constructor(props) {
@@ -16,19 +16,15 @@ class NameForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state.value)
     this.props.handleSubmit(this.state.value)
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <Form onSubmit={this.handleSubmit}>
+        <Input placeholder="Name" size="massive" onChange={this.handleChange}/>
+        <Button type="submit" size="massive" primary>Join</Button>
+      </Form>
     );
   }
 }
