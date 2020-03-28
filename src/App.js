@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import socketIOClient from "socket.io-client";
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
-import Players from './Players';
-import QuestionForm from './QuestionForm';
-import NameForm from './NameForm';
-import AnswerForm from './AnswerForm';
-import { Grid, GridColumn } from 'semantic-ui-react'
+import JoinView from './JoinView'
+import QuizView from './QuizView';
 
 class App extends Component {
 
@@ -38,12 +35,6 @@ class App extends Component {
         })
     }
 
-    setGameState(serverState) {
-        this.setState(state => ({
-            gameState: serverState
-        }));
-    }
-
     onNameSubmitted(name) {
         this.state.socket.emit("join", {name: name})
         this.setState({
@@ -61,50 +52,12 @@ class App extends Component {
     }
 
     render() {
-        const {response} = this.state;
-        if (this.state.gameState){
-            if (!this.state.joined) {
-                return <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                            <GridColumn>
-                                <NameForm handleSubmit={this.onNameSubmitted}/>
-                            </GridColumn>
-                        </Grid>
-            }
-            else {
-                let body;
-                if (this.state.gameState.question.text != "") {
-                    if (this.state.gameState.question.name == this.state.myName) {
-                        body = <p>Waiting for answers...</p>
-                    }
-                    else {
-                    body = 
-                        <div>
-                            <p>{this.state.gameState.question.name} asked a question:</p>
-                            <p>{this.state.gameState.question.text}</p>
-                            <p>Your Answer:</p>
-                            <AnswerForm handleSubmit={this.onAnswerSubmitted}/>
-                        </div>
-                    }
-                }
-                else {
-                    body =                   
-                        <div>
-                            <QuestionForm handleSubmit={this.onQuestionSubmitted}/>
-                        </div>
-                }
-                return (
-                    <div className="App">
-                        <header className="App-header">
-                            <h1>Quiz Party</h1>
-                        </header>
-                        <div>
-                            <Players players={this.state.gameState.players}/>
-                        </div>
-                        {body}
-                    </div>
-                );
-            }
-        }
+        return this.state.joined
+            ? <QuizView gameState={this.state.gameState}
+                        myName={this.state.myName}
+                        onAnswerSubmitted={this.onAnswerSubmitted}
+                        onQuestionSubmitted={this.onQuestionSubmitted}/>
+            : <JoinView onNameSubmitted={this.onNameSubmitted}/>
     }
 }
 

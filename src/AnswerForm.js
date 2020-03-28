@@ -21,6 +21,9 @@ class AnswerForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <p>{this.props.gameState.question.name} asked a question:</p>
+        <p>{this.props.gameState.question.text}</p>
+        <p>Your Answer:</p>
         <label>
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
