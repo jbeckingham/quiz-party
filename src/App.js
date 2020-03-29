@@ -4,6 +4,7 @@ import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import JoinView from './JoinView'
 import QuizView from './QuizView';
+import { Grid, Header } from 'semantic-ui-react'
 
 class App extends Component {
 
@@ -24,19 +25,19 @@ class App extends Component {
             socket: socketIOClient("http://127.0.0.1:5000")
         }
 
-        this.onNameSubmitted =  this.onNameSubmitted.bind(this)
-        this.onQuestionSubmitted =  this.onQuestionSubmitted.bind(this)
-        this.onAnswerSubmitted =  this.onQuestionSubmitted.bind(this)
+        this.onNameSubmitted = this.onNameSubmitted.bind(this)
+        this.onQuestionSubmitted = this.onQuestionSubmitted.bind(this)
+        this.onAnswerSubmitted = this.onQuestionSubmitted.bind(this)
     }
 
     componentDidMount() {
         this.state.socket.on("stateUpdated", gameState => {
-            this.setState({gameState: gameState})
+            this.setState({ gameState: gameState })
         })
     }
 
     onNameSubmitted(name) {
-        this.state.socket.emit("join", {name: name})
+        this.state.socket.emit("join", { name: name })
         this.setState({
             myName: name,
             joined: true
@@ -44,20 +45,35 @@ class App extends Component {
     }
 
     onQuestionSubmitted(question) {
-        this.state.socket.emit("ask", {name: this.state.myName, text: question});
+        console.log('q:', question)
+        this.state.socket.emit("ask", { name: this.state.myName, text: question });
     }
 
     onAnswerSubmitted(answer) {
-        this.state.socket.emit("answer", {name: this.state.myName, answer: answer})
+        this.state.socket.emit("answer", { name: this.state.myName, answer: answer })
     }
 
     render() {
-        return this.state.joined
-            ? <QuizView gameState={this.state.gameState}
-                        myName={this.state.myName}
-                        onAnswerSubmitted={this.onAnswerSubmitted}
-                        onQuestionSubmitted={this.onQuestionSubmitted}/>
-            : <JoinView onNameSubmitted={this.onNameSubmitted}/>
+        return (
+            <div id='main'>
+                <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <div>
+                                {this.state.joined
+                                    ? <QuizView gameState={this.state.gameState}
+                                        myName={this.state.myName}
+                                        onAnswerSubmitted={this.onAnswerSubmitted}
+                                        onQuestionSubmitted={this.onQuestionSubmitted} />
+                                    : <JoinView gameState={this.state.gameState}
+                                        onNameSubmitted={this.onNameSubmitted} />
+                                }
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </div>
+        )
     }
 }
 

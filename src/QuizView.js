@@ -2,33 +2,38 @@ import React from 'react'
 import AnswerForm from './AnswerForm'
 import QuestionForm from './QuestionForm'
 import Players from './Players'
+import { Grid, Header } from 'semantic-ui-react'
 
-const QuizView = ({myName, gameState, onAnswerSubmitted, onQuestionSubmitted}) => {
+const QuizView = ({ myName, gameState, onAnswerSubmitted, onQuestionSubmitted }) => {
     let body;
     if (gameState.question.text != "") {
         if (gameState.question.name == myName) {
-            body = <p>Waiting for answers...</p>
+            body = <Header as='h1'>Waiting for answers...</Header>
         }
         else {
-        body = 
+            body =
                 <AnswerForm gameState={gameState}
-                            handleSubmit={onAnswerSubmitted}/>
+                    handleSubmit={onAnswerSubmitted} />
         }
     }
     else {
-        body =                   
-                <QuestionForm handleSubmit={onQuestionSubmitted}/>
+        body =
+            <QuestionForm handleSubmit={onQuestionSubmitted} />
     }
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>Quiz Party</h1>
-            </header>
-            <div>
-                <Players players={gameState.players}/>
-            </div>
-            {body}
-        </div>
+        <Grid columns={2}>
+            <Grid.Row>
+                <Grid.Column width={12}>
+                    <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                        <Grid.Column>{body}</Grid.Column>
+                    </Grid>
+                </Grid.Column>
+                <Grid.Column width={4}>
+                    <Players players={gameState.players} />
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+
     );
 }
 

@@ -1,15 +1,20 @@
 import React from 'react'
-import { List, Label, Table, Header } from 'semantic-ui-react'
+import { Label, Table, Header } from 'semantic-ui-react'
+
+const getColour = i => {
+    const colours = ['teal', 'pink', 'yellow', 'purple', 'orange', 'green']
+    return colours[i % colours.length]
+}
 
 const Players = ({players}) =>
     <div className="players">
         <h1>Scores</h1>
         <Table basic="very">
             <Table.Body>
-                {players.map(name => (
+                {players.map((name, i) => (
                     <Table.Row>
                         <Table.Cell>
-                            <Label as="a" color="teal" size="huge" style={{textAlign: "center"}}>{name}</Label>
+                            <Label as="a" color={getColour(i)} size="huge" style={{textAlign: "center"}}>{name}</Label>
                         </Table.Cell>
                         <Table.Cell>
                             <Header size="huge">{18}</Header>

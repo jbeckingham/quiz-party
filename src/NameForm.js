@@ -1,17 +1,17 @@
 import React from 'react'
-import { Input, Button, Form } from 'semantic-ui-react'
+import { Input, Form } from 'semantic-ui-react'
 
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = { value: '' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   handleSubmit(event) {
@@ -22,8 +22,11 @@ class NameForm extends React.Component {
   render() {
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Input placeholder="Name" size="massive" onChange={this.handleChange}/>
-        <Button type="submit" size="massive" primary>Join</Button>
+        <Input
+          placeholder="Name"
+          size="massive"
+          action={{color: 'blue', size: 'massive', content: 'Join'}}
+          onChange={this.handleChange} />
       </Form>
     );
   }
