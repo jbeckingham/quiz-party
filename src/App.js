@@ -4,7 +4,9 @@ import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import JoinView from './JoinView'
 import QuizView from './QuizView';
-import { Grid, Header } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
+
+const socket = socketIOClient("http://127.0.0.1:5000")
 
 class App extends Component {
 
@@ -13,20 +15,18 @@ class App extends Component {
         this.state = {
             myName: "",
             joined: false,
-            gameState: null,
-            response: 0,
-            socket: socketIOClient("http://127.0.0.1:5000")
+            gameState: null
         }
     }
 
     componentDidMount() {
-        this.state.socket.on("stateUpdated", gameState => {
+        socket.on("stateUpdated", gameState => {
             this.setState({ gameState: gameState })
         })
     }
 
     onNameSubmitted = (name) => {
-        this.state.socket.emit("join", { name: name })
+        socket.emit("join", { name: name })
         this.setState({
             myName: name,
             joined: true
@@ -34,41 +34,47 @@ class App extends Component {
     }
 
     onQuestionSubmitted = (question) => {
-        console.log('q:', question)
-        this.state.socket.emit("ask", { name: this.state.myName, text: question });
+        socket.emit("ask", { name: this.state.myName, text: question });
     }
 
     onAnswerSubmitted = (answer) => {
         this.setState({
             answered: true
         })
-        this.state.socket.emit("answer", { name: this.state.myName, answer: answer })
+        socket.emit("answer", { name: this.state.myName, answer: answer })
     }
 
     render() {
-        if (!this.state.gameState) {
-            return <p>Unable to connect</p>
-        } else {
-            return <div id='main'>
-                <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <div>
-                                {this.state.joined
-                                    ? <QuizView gameState={this.state.gameState}
-                                        myName={this.state.myName}
-                                        answered={this.state.answered}
-                                        onAnswerSubmitted={this.onAnswerSubmitted}
-                                        onQuestionSubmitted={this.onQuestionSubmitted} />
-                                    : <JoinView gameState={this.state.gameState}
-                                        onNameSubmitted={this.onNameSubmitted} />
-                                }
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+        return (
+            <div id='main'>
+                {!this.state.gameState
+                    ? <p>Unable to connect</p>
+                    : (
+                        <Grid
+                            textAlign='center'
+                            style={{ height: '100vh' }}
+                            verticalAlign='middle'
+                        >
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <div>
+                                        {this.state.joined
+                                            ? <QuizView
+                                                gameState={this.state.gameState}
+                                                myName={this.state.myName}
+                                                onAnswerSubmitted={this.onAnswerSubmitted}
+                                                onQuestionSubmitted={this.onQuestionSubmitted} />
+                                            : <JoinView
+                                                gameState={this.state.gameState}
+                                                onNameSubmitted={this.onNameSubmitted} />
+                                        }
+                                    </div>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )}
             </div>
-        }
+        )
     }
 }
 

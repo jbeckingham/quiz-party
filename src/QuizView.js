@@ -1,8 +1,8 @@
 import React from 'react'
-import AnswerView from './AnswerView'
 import QuestionForm from './QuestionForm'
 import AnswerForm from './AnswerForm'
-import { Header } from 'semantic-ui-react'
+import Players from './Players'
+import { Header, Grid } from 'semantic-ui-react'
 
 const AnswersPendingView = ({ gameState }) => {
     const playersAnswered = Object.keys(gameState.currentQuestion.answers)
@@ -23,7 +23,8 @@ const SubmitAnswerView = ({ gameState, onAnswerSubmitted }) => (
     </div>
 )
 
-const QuizView = ({ gameState, myName, onAnswerSubmitted, onQuestionSubmitted }) => {
+
+const MainPanel = ({ gameState, myName, onAnswerSubmitted, onQuestionSubmitted }) => {
     if (!gameState.currentQuestion) {
         return <QuestionForm handleSubmit={onQuestionSubmitted} />
     }
@@ -39,4 +40,24 @@ const QuizView = ({ gameState, myName, onAnswerSubmitted, onQuestionSubmitted })
     return <AnswersPendingView gameState={gameState} />
 }
 
+const QuizView = ({ gameState, myName, onAnswerSubmitted, onQuestionSubmitted }) => (
+    <Grid columns={2}>
+        <Grid.Row>
+            <Grid.Column width={12}>
+                <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+                    <Grid.Column>
+                        <MainPanel
+                            gameState={gameState}
+                            myName={myName}
+                            onAnswerSubmitted={onAnswerSubmitted}
+                            onQuestionSubmitted={onQuestionSubmitted} />
+                    </Grid.Column>
+                </Grid>
+            </Grid.Column>
+            <Grid.Column width={4}>
+                <Players players={gameState.players} />
+            </Grid.Column>
+        </Grid.Row>
+    </Grid>
+)
 export default QuizView
