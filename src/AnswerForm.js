@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react'
+import { Input, Form, Button, TextArea, Header } from 'semantic-ui-react'
 
 class AnswerForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = { value: '' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   handleSubmit(event) {
@@ -20,14 +21,14 @@ class AnswerForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <p>Enter your Answer:</p>
-        <label>
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    );
+      <Form onSubmit={this.handleSubmit} size='massive' style={{ width: '50%', margin: 'auto' }}>
+        <Header as="h2">Enter your answer:</Header>
+        <Form.Field>
+          <Input onChange={this.handleChange} />
+        </Form.Field>
+        <Button type='submit' size='huge' primary>Submit</Button>
+      </Form>
+    )
   }
 }
 

@@ -12,7 +12,7 @@ const Players = ({players}) =>
         <Table basic="very">
             <Table.Body>
                 {players.map((name, i) => (
-                    <Table.Row>
+                    <Table.Row key={name}>
                         <Table.Cell>
                             <Label as="a" color={getColour(i)} size="huge" style={{textAlign: "center"}}>{name}</Label>
                         </Table.Cell>

@@ -1,11 +1,10 @@
 import React from 'react'
-import AnswerForm from './AnswerForm'
 import { List, Label, Table, Header } from 'semantic-ui-react'
 
 const AnswerView = ({gameState}) => {
     return (
         <div id="answers">
-            <Answers answers={gameState.question.answers} />
+            <Answers answers={gameState.currentQuestion.answers} />
         </div>
     )
 }
@@ -15,13 +14,13 @@ function Answers({answers}) {
         return (
             <Table basic="very">
                 <Table.Body>
-                    {answers.map(answer => (
+                    {Object.entries(answers).map(([name, answer]) => (
                         <Table.Row>
                             <Table.Cell>
-                                <Label>{answer.name}</Label>
+                                <Label>{name}</Label>
                             </Table.Cell>
                             <Table.Cell>
-                                <Header>{answer.value}</Header>
+                                <Header>{answer}</Header>
                             </Table.Cell>
                         </Table.Row>
                     ))}

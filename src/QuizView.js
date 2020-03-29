@@ -1,48 +1,42 @@
 import React from 'react'
 import AnswerView from './AnswerView'
 import QuestionForm from './QuestionForm'
-import Players from './Players'
-import { Grid, Header } from 'semantic-ui-react'
 import AnswerForm from './AnswerForm'
+import { Header } from 'semantic-ui-react'
 
-const QuizView = ({gameState, answered, onAnswerSubmitted, onQuestionSubmitted}) => {
-    let body;
-    let question;
-    let answerForm;
-    if (gameState.question.text != "") {
-        question = <div>
-                        <p>{gameState.question.name} asked a question:</p>
-                        <p>{gameState.question.text}</p>
-                    </div>
-        body = <AnswerView gameState={gameState}></AnswerView>
-        if (!answered) {
-            answerForm =
-                <AnswerForm gameState={gameState}
-                    handleSubmit={onAnswerSubmitted} />
-        }
-    }
-    else {
-        body =
-            <QuestionForm handleSubmit={onQuestionSubmitted} />
-    }
+const AnswersPendingView = ({ gameState }) => {
+    const playersAnswered = Object.keys(gameState.currentQuestion.answers)
     return (
         <div>
-            {question}
-            {answerForm}
-            <Grid columns={2}>
-                <Grid.Row>
-                    <Grid.Column width={12}>
-                        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                            <Grid.Column>{body}</Grid.Column>
-                        </Grid>
-                    </Grid.Column>
-                    <Grid.Column width={4}>
-                        <Players players={gameState.players} />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <h1>Waiting for answers...</h1>
+            <h2>Questions has been answered by:</h2>
+            <h2>{playersAnswered.join(', ')}</h2>
         </div>
-    );
+    )
+}
+
+const SubmitAnswerView = ({ gameState, onAnswerSubmitted }) => (
+    <div>
+        <Header as="h2">{gameState.currentQuestion.name} asked a question:</Header>
+        <Header as="h1">{gameState.currentQuestion.text} </Header>
+        <AnswerForm gameState={gameState} handleSubmit={onAnswerSubmitted} />
+    </div>
+)
+
+const QuizView = ({ gameState, myName, onAnswerSubmitted, onQuestionSubmitted }) => {
+    if (!gameState.currentQuestion) {
+        return <QuestionForm handleSubmit={onQuestionSubmitted} />
+    }
+
+    const answered = gameState.currentQuestion.answers[myName]
+    const questionAskedByMe = gameState.currentQuestion.name === myName
+
+    if (!answered && !questionAskedByMe) {
+        return <SubmitAnswerView gameState={gameState} onAnswerSubmitted={onAnswerSubmitted} />
+
+    }
+
+    return <AnswersPendingView gameState={gameState} />
 }
 
 export default QuizView

@@ -12,25 +12,8 @@ class App extends Component {
         super();
         this.state = {
             myName: "",
-            answered: false,
             joined: false,
-            gameState: {
-                players: [],
-                question: {
-                    text: "",
-                    name: "",
-                    answers: [ 
-                        {
-                            name: "Jen",
-                            value: "Blue"
-                        },
-                        {
-                            name: "Tigger",
-                            value: "Orange"
-                        }
-                    ]
-                }
-            },
+            gameState: null,
             response: 0,
             socket: socketIOClient("http://127.0.0.1:5000")
         }
@@ -63,8 +46,10 @@ class App extends Component {
     }
 
     render() {
-        return (
-            <div id='main'>
+        if (!this.state.gameState) {
+            return <p>Unable to connect</p>
+        } else {
+            return <div id='main'>
                 <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                     <Grid.Row>
                         <Grid.Column>
@@ -72,7 +57,7 @@ class App extends Component {
                                 {this.state.joined
                                     ? <QuizView gameState={this.state.gameState}
                                         myName={this.state.myName}
-                                        answered = {this.state.answered}
+                                        answered={this.state.answered}
                                         onAnswerSubmitted={this.onAnswerSubmitted}
                                         onQuestionSubmitted={this.onQuestionSubmitted} />
                                     : <JoinView gameState={this.state.gameState}
@@ -83,7 +68,7 @@ class App extends Component {
                     </Grid.Row>
                 </Grid>
             </div>
-        )
+        }
     }
 }
 
