@@ -12,22 +12,28 @@ class App extends Component {
         super();
         this.state = {
             myName: "",
+            answered: false,
             joined: false,
             gameState: {
                 players: [],
                 question: {
                     text: "",
                     name: "",
-                    answers: {}
+                    answers: [ 
+                        {
+                            name: "Jen",
+                            value: "Blue"
+                        },
+                        {
+                            name: "Tigger",
+                            value: "Orange"
+                        }
+                    ]
                 }
             },
             response: 0,
             socket: socketIOClient("http://127.0.0.1:5000")
         }
-
-        this.onNameSubmitted = this.onNameSubmitted.bind(this)
-        this.onQuestionSubmitted = this.onQuestionSubmitted.bind(this)
-        this.onAnswerSubmitted = this.onQuestionSubmitted.bind(this)
     }
 
     componentDidMount() {
@@ -36,7 +42,7 @@ class App extends Component {
         })
     }
 
-    onNameSubmitted(name) {
+    onNameSubmitted = (name) => {
         this.state.socket.emit("join", { name: name })
         this.setState({
             myName: name,
@@ -44,12 +50,15 @@ class App extends Component {
         })
     }
 
-    onQuestionSubmitted(question) {
+    onQuestionSubmitted = (question) => {
         console.log('q:', question)
         this.state.socket.emit("ask", { name: this.state.myName, text: question });
     }
 
-    onAnswerSubmitted(answer) {
+    onAnswerSubmitted = (answer) => {
+        this.setState({
+            answered: true
+        })
         this.state.socket.emit("answer", { name: this.state.myName, answer: answer })
     }
 
@@ -63,6 +72,7 @@ class App extends Component {
                                 {this.state.joined
                                     ? <QuizView gameState={this.state.gameState}
                                         myName={this.state.myName}
+                                        answered = {this.state.answered}
                                         onAnswerSubmitted={this.onAnswerSubmitted}
                                         onQuestionSubmitted={this.onQuestionSubmitted} />
                                     : <JoinView gameState={this.state.gameState}
