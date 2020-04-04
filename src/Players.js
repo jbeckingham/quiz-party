@@ -11,13 +11,13 @@ const Players = ({players}) =>
         <h1>Scores</h1>
         <Table basic="very">
             <Table.Body>
-                {players.map((name, i) => (
-                    <Table.Row key={name}>
+                {players.map((player, i) => (
+                    <Table.Row key={player.name}>
                         <Table.Cell>
-                            <Label as="a" color={getColour(i)} size="huge" style={{textAlign: "center"}}>{name}</Label>
+                            <Label as="a" color={getColour(i)} size="huge" style={{textAlign: "center"}}>{player.name}</Label>
                         </Table.Cell>
                         <Table.Cell>
-                            <Header size="huge">{18}</Header>
+                            <Header size="huge">{player.score}</Header>
                         </Table.Cell>
                     </Table.Row>
                 ))}

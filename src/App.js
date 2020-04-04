@@ -44,6 +44,11 @@ class App extends Component {
         socket.emit("answer", { name: this.state.myName, answer: answer })
     }
 
+
+    onResultsSubmitted = (markedAnswers) => {
+        socket.emit("results", { results: markedAnswers})
+    }
+
     render() {
         return (
             <div id='main'>
@@ -63,7 +68,8 @@ class App extends Component {
                                                 gameState={this.state.gameState}
                                                 myName={this.state.myName}
                                                 onAnswerSubmitted={this.onAnswerSubmitted}
-                                                onQuestionSubmitted={this.onQuestionSubmitted} />
+                                                onQuestionSubmitted={this.onQuestionSubmitted} 
+                                                onResultsSubmitted={this.onResultsSubmitted}  />
                                             : <JoinView
                                                 gameState={this.state.gameState}
                                                 onNameSubmitted={this.onNameSubmitted} />

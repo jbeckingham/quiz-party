@@ -13,9 +13,9 @@ const JoinView = ({ onNameSubmitted, gameState }) =>
             <Header as="h1">Join the party!</Header>
         </GridRow>
         <GridRow>
-            {gameState.players.map((name, i) => (
-                <Label key={name} color={getColour(i)} size="huge" style={{ textAlign: "center" }}>
-                    {name}
+            {gameState.players.map((player, i) => (
+                <Label key={player.name} color={getColour(i)} size="huge" style={{ textAlign: "center" }}>
+                    {player.name}
                 </Label>
             ))}
         </GridRow>
