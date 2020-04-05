@@ -5,13 +5,18 @@ import 'semantic-ui-css/semantic.min.css'
 import JoinView from './JoinView'
 import QuizView from './QuizView';
 import { Grid } from 'semantic-ui-react'
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 
 const socket = socketIOClient("http://127.0.0.1:5000")
 
 class App extends Component {
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+      };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);     
         this.state = {
             myName: "",
             joined: false,
@@ -20,17 +25,25 @@ class App extends Component {
     }
 
     componentDidMount() {
+        const myName = this.getCookieName();
+        this.setState({
+                myName: myName,
+                joined: myName ? true : false,
+            }
+        )
         socket.on("stateUpdated", gameState => {
             this.setState({ gameState: gameState })
         })
     }
 
     onNameSubmitted = (name) => {
+        const { cookies } = this.props;
         socket.emit("join", { name: name })
         this.setState({
             myName: name,
             joined: true
         })
+        cookies.set('quizParty', {name: name, quizId: 1});
     }
 
     onQuestionSubmitted = (question) => {
@@ -47,6 +60,13 @@ class App extends Component {
 
     onResultsSubmitted = (markedAnswers) => {
         socket.emit("results", { results: markedAnswers})
+    }
+
+    getCookieName = () => {
+        const { cookies } = this.props;
+        return (cookies.get("quizParty") && cookies.get("quizParty").quizId == 1) 
+            ? cookies.get("quizParty")
+            : "";
     }
 
     render() {
@@ -84,4 +104,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withCookies(App);
