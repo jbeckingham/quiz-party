@@ -7,6 +7,7 @@ import QuizView from "./QuizView";
 import { Grid } from "semantic-ui-react";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
+import LeaveForm from "./LeaveForm";
 
 const socket = socketIOClient("http://127.0.0.1:5000");
 
@@ -61,6 +62,16 @@ class App extends Component {
         socket.emit("results", { results: markedAnswers });
     };
 
+    onLeaveSubmitted = () => {
+        const { cookies } = this.props;
+        socket.emit("leave", { name: this.state.myName });
+        cookies.remove("quizParty");
+        this.setState({
+            myName: "",
+            joined: false,
+        });
+    };
+
     getCookieName = () => {
         const { cookies } = this.props;
         return cookies.get("quizParty") && cookies.get("quizParty").quizId == 1
@@ -83,19 +94,26 @@ class App extends Component {
                             <Grid.Column>
                                 <div>
                                     {this.state.joined ? (
-                                        <QuizView
-                                            gameState={this.state.gameState}
-                                            myName={this.state.myName}
-                                            onAnswerSubmitted={
-                                                this.onAnswerSubmitted
-                                            }
-                                            onQuestionSubmitted={
-                                                this.onQuestionSubmitted
-                                            }
-                                            onResultsSubmitted={
-                                                this.onResultsSubmitted
-                                            }
-                                        />
+                                        <div>
+                                            <LeaveForm
+                                                handleSubmit={
+                                                    this.onLeaveSubmitted
+                                                }
+                                            />
+                                            <QuizView
+                                                gameState={this.state.gameState}
+                                                myName={this.state.myName}
+                                                onAnswerSubmitted={
+                                                    this.onAnswerSubmitted
+                                                }
+                                                onQuestionSubmitted={
+                                                    this.onQuestionSubmitted
+                                                }
+                                                onResultsSubmitted={
+                                                    this.onResultsSubmitted
+                                                }
+                                            />
+                                        </div>
                                     ) : (
                                         <JoinView
                                             gameState={this.state.gameState}

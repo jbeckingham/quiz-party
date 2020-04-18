@@ -25,7 +25,7 @@ const JoinView = ({ onNameSubmitted, gameState }) => (
             ))}
         </GridRow>
         <GridRow>
-            <NameForm handleSubmit={onNameSubmitted} />
+            <NameForm gameState={gameState} handleSubmit={onNameSubmitted} />
         </GridRow>
     </Grid>
 );

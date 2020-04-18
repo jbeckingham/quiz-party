@@ -3,6 +3,7 @@ import QuestionForm from "./QuestionForm";
 import AnswerForm from "./AnswerForm";
 import Players from "./Players";
 import ResultForm from "./ResultForm";
+import LeaveForm from "./LeaveForm";
 import { Header, Grid, Label, Table } from "semantic-ui-react";
 
 const AnswersPendingView = ({ gameState }) => {
