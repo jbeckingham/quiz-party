@@ -32,6 +32,7 @@ class App extends Component {
             }
         )
         socket.on("stateUpdated", gameState => {
+            gameState.players.sort((a, b) => (a.name > b.name) ? 1 : -1)
             this.setState({ gameState: gameState })
         })
     }
@@ -65,7 +66,7 @@ class App extends Component {
     getCookieName = () => {
         const { cookies } = this.props;
         return (cookies.get("quizParty") && cookies.get("quizParty").quizId == 1) 
-            ? cookies.get("quizParty")
+            ? cookies.get("quizParty").name
             : "";
     }
 
