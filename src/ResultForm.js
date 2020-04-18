@@ -1,16 +1,16 @@
-import React from 'react'
-import { Form, Button, Header, Table, Label, Select } from 'semantic-ui-react'
+import React from "react";
+import { Form, Button, Header, Table, Label, Select } from "semantic-ui-react";
 
-const getColour = i => {
-    const colours = ['teal', 'pink', 'yellow', 'purple', 'orange', 'green']
-    return colours[i % colours.length]
-}
+const getColour = (i) => {
+    const colours = ["teal", "pink", "yellow", "purple", "orange", "green"];
+    return colours[i % colours.length];
+};
 
 const resultOptions = [
-    { key: 'correct', value: 1, text: 'Correct' },
-    { key: 'half', value: 0.5, text: "I'll give ya half" },
-    { key: 'incorrect', value: 0, text: 'Incorrect' }
-  ]
+    { key: "correct", value: 1, text: "Correct" },
+    { key: "half", value: 0.5, text: "I'll give ya half" },
+    { key: "incorrect", value: 0, text: "Incorrect" },
+];
 
 class ResultForm extends React.Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class ResultForm extends React.Component {
     }
 
     handleChange(value, name) {
-        this.setState({ results: { ...this.state.results, [name]: value} });
+        this.setState({ results: { ...this.state.results, [name]: value } });
     }
 
     handleSubmit(event) {
@@ -37,31 +37,62 @@ class ResultForm extends React.Component {
     }
 
     render() {
-        return (<div>
-            <Form onSubmit={this.handleSubmit} style={{ width: '50%', margin: 'auto' }}>
-                <Table basic="very">
-                    <Table.Body>
-                        {Object.keys(this.props.gameState.currentQuestion.answers).map((name, i) => (
-                            <Table.Row key={name}>
-                                <Table.Cell>
-                                    <Label as="a" size="huge" color={this.getPlayerColour(name)} style={{ textAlign: "center" }}>{name}</Label>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    <Header size="huge" >{this.props.gameState.currentQuestion.answers[name]}</Header>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    <Header>
-                                       <Select onChange={ (event, data) => this.handleChange(data.value, name) } placeholder='Select...' options={resultOptions} />
-                                    </Header>
-                                </Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-                <Button type='submit' size='huge' primary>Submit Results</Button>
-            </Form>
-        </div>
-        )
+        return (
+            <div>
+                <Form
+                    onSubmit={this.handleSubmit}
+                    style={{ width: "50%", margin: "auto" }}
+                >
+                    <Table basic="very">
+                        <Table.Body>
+                            {Object.keys(
+                                this.props.gameState.currentQuestion.answers
+                            ).map((name, i) => (
+                                <Table.Row key={name}>
+                                    <Table.Cell>
+                                        <Label
+                                            as="a"
+                                            size="huge"
+                                            color={this.getPlayerColour(name)}
+                                            style={{ textAlign: "center" }}
+                                        >
+                                            {name}
+                                        </Label>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Header size="huge">
+                                            {
+                                                this.props.gameState
+                                                    .currentQuestion.answers[
+                                                    name
+                                                ]
+                                            }
+                                        </Header>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Header>
+                                            <Select
+                                                onChange={(event, data) =>
+                                                    this.handleChange(
+                                                        data.value,
+                                                        name
+                                                    )
+                                                }
+                                                placeholder="Select..."
+                                                options={resultOptions}
+                                            />
+                                        </Header>
+                                    </Table.Cell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+                    <Button type="submit" size="huge" primary>
+                        Submit Results
+                    </Button>
+                </Form>
+            </div>
+        );
     }
 }
 

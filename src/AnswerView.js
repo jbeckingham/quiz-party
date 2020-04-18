@@ -1,15 +1,15 @@
-import React from 'react'
-import { List, Label, Table, Header } from 'semantic-ui-react'
+import React from "react";
+import { List, Label, Table, Header } from "semantic-ui-react";
 
-const AnswerView = ({gameState}) => {
+const AnswerView = ({ gameState }) => {
     return (
         <div id="answers">
             <Answers answers={gameState.currentQuestion.answers} />
         </div>
-    )
-}
+    );
+};
 
-function Answers({answers}) {
+function Answers({ answers }) {
     if (answers) {
         return (
             <Table basic="very">
@@ -26,8 +26,8 @@ function Answers({answers}) {
                     ))}
                 </Table.Body>
             </Table>
-        )
+        );
     }
 }
 
-export default AnswerView
+export default AnswerView;
