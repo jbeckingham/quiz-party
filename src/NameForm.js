@@ -1,10 +1,9 @@
 import React from "react";
-import { Input, Form, Message } from "semantic-ui-react";
+import { Input, Form, Message, Button } from "semantic-ui-react";
 
 class NameForm extends React.Component {
     constructor(props) {
         super(props);
-        //   this.names = this.props.gameState.players.map((player) => player.name);
         this.state = {
             value: "",
         };
@@ -14,7 +13,6 @@ class NameForm extends React.Component {
     }
 
     handleChange(event) {
-        //   this.names = this.props.gameState.players.map((player) => player.name);
         this.setState({
             value: event.target.value,
         });
@@ -33,17 +31,23 @@ class NameForm extends React.Component {
         return (
             <div>
                 <Form onSubmit={this.handleSubmit}>
-                    <Input
-                        placeholder="Name"
+                    <Form.Field>
+                        <Input
+                            placeholder="Name"
+                            size="massive"
+                            onChange={this.handleChange}
+                        />
+                    </Form.Field>
+                    <Button
+                        disabled={!this.state.value || nameTaken}
+                        type="submit"
+                        size="huge"
+                        primary
+                        color="blue"
                         size="massive"
-                        action={{
-                            color: "blue",
-                            size: "massive",
-                            content: "Join",
-                            disabled: !this.state.value || nameTaken,
-                        }}
-                        onChange={this.handleChange}
-                    />
+                    >
+                        Join
+                    </Button>
                 </Form>
                 {nameTaken && (
                     <Message

@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Form, Button, TextArea, Header } from "semantic-ui-react";
+import { Form, Button, TextArea, Header, Message } from "semantic-ui-react";
 
 class QuestionForm extends React.Component {
     constructor(props) {
@@ -20,23 +20,38 @@ class QuestionForm extends React.Component {
     }
 
     render() {
+        let enoughPlayers = this.props.gameState.players.length > 1;
+        let canAskQuestion = this.state.value && enoughPlayers;
         return (
-            <Form
-                onSubmit={this.handleSubmit}
-                size="massive"
-                style={{ width: "50%", margin: "auto" }}
-            >
-                <Header as="h1">Somebody ask a question</Header>
-                <Form.Field>
-                    <TextArea
-                        placeholder="Ask a question..."
-                        onChange={this.handleChange}
+            <div>
+                <Form
+                    onSubmit={this.handleSubmit}
+                    size="massive"
+                    style={{ width: "50%", margin: "auto" }}
+                >
+                    <Header as="h1">Somebody ask a question</Header>
+                    <Form.Field>
+                        <TextArea
+                            placeholder="Ask a question..."
+                            onChange={this.handleChange}
+                        />
+                    </Form.Field>
+                    <Button
+                        type="submit"
+                        size="huge"
+                        primary
+                        disabled={!canAskQuestion}
+                    >
+                        Ask
+                    </Button>
+                </Form>
+                {!enoughPlayers && (
+                    <Message
+                        error
+                        content="You will need to wait for others to join the quiz before you can ask a question."
                     />
-                </Form.Field>
-                <Button type="submit" size="huge" primary>
-                    Submit
-                </Button>
-            </Form>
+                )}
+            </div>
         );
     }
 }

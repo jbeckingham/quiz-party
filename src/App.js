@@ -26,14 +26,14 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const myName = this.getCookieName();
-        this.setState({
-            myName: myName,
-            joined: myName ? true : false,
-        });
         socket.on("stateUpdated", (gameState) => {
             gameState.players.sort((a, b) => (a.name > b.name ? 1 : -1));
             this.setState({ gameState: gameState });
+            let myName = this.getName(gameState);
+            this.setState({
+                myName: myName,
+                joined: myName ? true : false,
+            });
         });
     }
 
@@ -72,11 +72,27 @@ class App extends Component {
         });
     };
 
+    onMarkNow = () => {
+        socket.emit("forceMark");
+    };
+
     getCookieName = () => {
         const { cookies } = this.props;
         return cookies.get("quizParty") && cookies.get("quizParty").quizId == 1
             ? cookies.get("quizParty").name
             : "";
+    };
+
+    getName = (gameState) => {
+        const { cookies } = this.props;
+        let players = gameState.players.map((player) => player.name);
+        let cookieName = this.getCookieName();
+        if (cookieName && players.includes(cookieName)) {
+            return cookieName;
+        }
+        // If cookie name isn't in players array, player will have to rejoin
+        cookies.remove("quizParty");
+        return "";
     };
 
     render() {
@@ -112,6 +128,7 @@ class App extends Component {
                                                 onResultsSubmitted={
                                                     this.onResultsSubmitted
                                                 }
+                                                onMarkNow={this.onMarkNow}
                                             />
                                         </div>
                                     ) : (

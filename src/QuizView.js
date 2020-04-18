@@ -4,15 +4,22 @@ import AnswerForm from "./AnswerForm";
 import Players from "./Players";
 import ResultForm from "./ResultForm";
 import LeaveForm from "./LeaveForm";
+import MarkNow from "./MarkNow";
 import { Header, Grid, Label, Table } from "semantic-ui-react";
 
-const AnswersPendingView = ({ gameState }) => {
+const AnswersPendingView = ({ gameState, onMarkNow, myName }) => {
     const playersAnswered = Object.keys(gameState.currentQuestion.answers);
+    const questionAskedByMe = gameState.currentQuestion.name === myName;
     return (
         <div>
-            <h1>Waiting for answers...</h1>
+            <h1>Waiting for answers to "{gameState.currentQuestion.text}"</h1>
             <h2>Question has been answered by:</h2>
-            <h2>{playersAnswered.join(", ")}</h2>
+            {playersAnswered.length ? (
+                <h2>{playersAnswered.join(", ")}</h2>
+            ) : (
+                <h2>No one yet</h2>
+            )}
+            {questionAskedByMe && <MarkNow handleSubmit={onMarkNow} />}
         </div>
     );
 };
@@ -29,7 +36,9 @@ const SubmitAnswerView = ({ gameState, onAnswerSubmitted }) => (
 
 const AnswersMarkingView = ({ gameState, onResultsSubmitted }) => (
     <div>
-        <Header as="h2">Mark the answers:</Header>
+        <Header as="h2">
+            Mark the answers to "{gameState.currentQuestion.text}"
+        </Header>
         <ResultForm gameState={gameState} handleSubmit={onResultsSubmitted} />
     </div>
 );
@@ -40,28 +49,34 @@ const MainPanel = ({
     onAnswerSubmitted,
     onQuestionSubmitted,
     onResultsSubmitted,
+    onMarkNow,
 }) => {
     if (!gameState.currentQuestion) {
-        return <QuestionForm handleSubmit={onQuestionSubmitted} />;
+        return (
+            <QuestionForm
+                gameState={gameState}
+                handleSubmit={onQuestionSubmitted}
+            />
+        );
     }
 
     const answered = gameState.currentQuestion.answers[myName];
     const questionAskedByMe = gameState.currentQuestion.name === myName;
-    const allAnswersSubmitted =
+    const readyToMark =
         gameState.players.length - 1 ===
-        Object.keys(gameState.currentQuestion.answers).length;
+            Object.keys(gameState.currentQuestion.answers).length ||
+        gameState.currentQuestion.forceMark;
 
-    if (!answered && !questionAskedByMe) {
+    if (!answered && !questionAskedByMe && !readyToMark) {
         return (
             <SubmitAnswerView
                 gameState={gameState}
                 onAnswerSubmitted={onAnswerSubmitted}
             />
         );
-    } else if (allAnswersSubmitted && !questionAskedByMe) {
+    } else if (readyToMark && !questionAskedByMe) {
         return <h3>{gameState.currentQuestion.name} is marking the results</h3>;
-    } else if (allAnswersSubmitted && questionAskedByMe) {
-        console.log({ gameState });
+    } else if (readyToMark && questionAskedByMe) {
         return (
             <AnswersMarkingView
                 gameState={gameState}
@@ -70,7 +85,13 @@ const MainPanel = ({
         );
     }
 
-    return <AnswersPendingView gameState={gameState} />;
+    return (
+        <AnswersPendingView
+            gameState={gameState}
+            onMarkNow={onMarkNow}
+            myName={myName}
+        />
+    );
 };
 
 const QuizView = ({
@@ -79,6 +100,7 @@ const QuizView = ({
     onAnswerSubmitted,
     onQuestionSubmitted,
     onResultsSubmitted,
+    onMarkNow,
 }) => (
     <Grid columns={2}>
         <Grid.Row>
@@ -95,6 +117,7 @@ const QuizView = ({
                             onAnswerSubmitted={onAnswerSubmitted}
                             onQuestionSubmitted={onQuestionSubmitted}
                             onResultsSubmitted={onResultsSubmitted}
+                            onMarkNow={onMarkNow}
                         />
                     </Grid.Column>
                 </Grid>

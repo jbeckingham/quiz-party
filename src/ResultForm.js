@@ -37,60 +37,81 @@ class ResultForm extends React.Component {
     }
 
     render() {
+        let answers = Object.keys(this.props.gameState.currentQuestion.answers);
+        let allAnswered =
+            Object.keys(this.state.results).length == answers.length;
         return (
             <div>
-                <Form
-                    onSubmit={this.handleSubmit}
-                    style={{ width: "50%", margin: "auto" }}
-                >
-                    <Table basic="very">
-                        <Table.Body>
-                            {Object.keys(
-                                this.props.gameState.currentQuestion.answers
-                            ).map((name, i) => (
-                                <Table.Row key={name}>
-                                    <Table.Cell>
-                                        <Label
-                                            as="a"
-                                            size="huge"
-                                            color={this.getPlayerColour(name)}
-                                            style={{ textAlign: "center" }}
-                                        >
-                                            {name}
-                                        </Label>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <Header size="huge">
-                                            {
-                                                this.props.gameState
-                                                    .currentQuestion.answers[
+                {answers.length ? (
+                    <Form
+                        onSubmit={this.handleSubmit}
+                        style={{ width: "50%", margin: "auto" }}
+                    >
+                        <Table basic="very">
+                            <Table.Body>
+                                {answers.map((name, i) => (
+                                    <Table.Row key={name}>
+                                        <Table.Cell>
+                                            <Label
+                                                as="a"
+                                                size="huge"
+                                                color={this.getPlayerColour(
                                                     name
-                                                ]
-                                            }
-                                        </Header>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <Header>
-                                            <Select
-                                                onChange={(event, data) =>
-                                                    this.handleChange(
-                                                        data.value,
-                                                        name
-                                                    )
+                                                )}
+                                                style={{ textAlign: "center" }}
+                                            >
+                                                {name}
+                                            </Label>
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <Header size="huge">
+                                                {
+                                                    this.props.gameState
+                                                        .currentQuestion
+                                                        .answers[name]
                                                 }
-                                                placeholder="Select..."
-                                                options={resultOptions}
-                                            />
-                                        </Header>
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Body>
-                    </Table>
-                    <Button type="submit" size="huge" primary>
-                        Submit Results
-                    </Button>
-                </Form>
+                                            </Header>
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <Header>
+                                                <Select
+                                                    onChange={(event, data) =>
+                                                        this.handleChange(
+                                                            data.value,
+                                                            name
+                                                        )
+                                                    }
+                                                    placeholder="Select..."
+                                                    options={resultOptions}
+                                                />
+                                            </Header>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                        <Button
+                            type="submit"
+                            size="huge"
+                            primary
+                            disabled={!allAnswered}
+                        >
+                            Submit Results
+                        </Button>
+                    </Form>
+                ) : (
+                    <div>
+                        <h2>Looks like no one answered your question.</h2>
+                        <Form
+                            onSubmit={this.handleSubmit}
+                            style={{ width: "50%", margin: "auto" }}
+                        >
+                            <Button type="submit" size="huge" primary>
+                                Start again
+                            </Button>
+                        </Form>
+                    </div>
+                )}
             </div>
         );
     }
