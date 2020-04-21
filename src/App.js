@@ -8,6 +8,9 @@ import { Grid } from "semantic-ui-react";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 import LeaveForm from "./LeaveForm";
+import Home from "./Home";
+import Quiz from "./Quiz";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const socket = socketIOClient("http://127.0.0.1:5000");
 
@@ -19,132 +22,41 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            myName: "",
-            joined: false,
-            gameState: null,
+            connected: false,
         };
     }
 
     componentDidMount() {
-        socket.on("stateUpdated", (gameState) => {
-            gameState.players.sort((a, b) => (a.name > b.name ? 1 : -1));
-            this.setState({ gameState: gameState });
-            let myName = this.getName(gameState);
+        socket.on("connected", (gameState) => {
             this.setState({
-                myName: myName,
-                joined: myName ? true : false,
+                connected: true,
             });
+        });
+        socket.on("quizAdded", (id) => {
+            window.location.assign("/quiz/" + id);
         });
     }
 
-    onNameSubmitted = (name) => {
-        const { cookies } = this.props;
-        socket.emit("join", { name: name });
-        this.setState({
-            myName: name,
-            joined: true,
-        });
-        cookies.set("quizParty", { name: name, quizId: 1 });
-    };
-
-    onQuestionSubmitted = (question) => {
-        socket.emit("ask", { name: this.state.myName, text: question });
-    };
-
-    onAnswerSubmitted = (answer) => {
-        this.setState({
-            answered: true,
-        });
-        socket.emit("answer", { name: this.state.myName, answer: answer });
-    };
-
-    onResultsSubmitted = (markedAnswers) => {
-        socket.emit("results", { results: markedAnswers });
-    };
-
-    onLeaveSubmitted = () => {
-        const { cookies } = this.props;
-        socket.emit("leave", { name: this.state.myName });
-        cookies.remove("quizParty");
-        this.setState({
-            myName: "",
-            joined: false,
-        });
-    };
-
-    onMarkNow = () => {
-        socket.emit("forceMark");
-    };
-
-    getCookieName = () => {
-        const { cookies } = this.props;
-        return cookies.get("quizParty") && cookies.get("quizParty").quizId == 1
-            ? cookies.get("quizParty").name
-            : "";
-    };
-
-    getName = (gameState) => {
-        const { cookies } = this.props;
-        let players = gameState.players.map((player) => player.name);
-        let cookieName = this.getCookieName();
-        if (cookieName && players.includes(cookieName)) {
-            return cookieName;
-        }
-        // If cookie name isn't in players array, player will have to rejoin
-        cookies.remove("quizParty");
-        return "";
+    onNewQuiz = () => {
+        socket.emit("newQuiz", { name: this.state.value });
     };
 
     render() {
         return (
-            <div id="main">
-                {!this.state.gameState ? (
-                    <p>Unable to connect</p>
-                ) : (
-                    <Grid
-                        textAlign="center"
-                        style={{ height: "100vh" }}
-                        verticalAlign="middle"
-                    >
-                        <Grid.Row>
-                            <Grid.Column>
-                                <div>
-                                    {this.state.joined ? (
-                                        <div>
-                                            <LeaveForm
-                                                handleSubmit={
-                                                    this.onLeaveSubmitted
-                                                }
-                                            />
-                                            <QuizView
-                                                gameState={this.state.gameState}
-                                                myName={this.state.myName}
-                                                onAnswerSubmitted={
-                                                    this.onAnswerSubmitted
-                                                }
-                                                onQuestionSubmitted={
-                                                    this.onQuestionSubmitted
-                                                }
-                                                onResultsSubmitted={
-                                                    this.onResultsSubmitted
-                                                }
-                                                onMarkNow={this.onMarkNow}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <JoinView
-                                            gameState={this.state.gameState}
-                                            onNameSubmitted={
-                                                this.onNameSubmitted
-                                            }
-                                        />
-                                    )}
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                )}
-            </div>
+            <Router>
+                <div id="main">
+                    {!this.state.connected ? (
+                        <p>Unable to connect</p>
+                    ) : (
+                        <Switch>
+                            <Route exact path="/">
+                                <Home handleSubmit={this.onNewQuiz} />
+                            </Route>
+                            <Route path="/quiz/:id" component={Quiz} />
+                        </Switch>
+                    )}
+                </div>
+            </Router>
         );
     }
 }
