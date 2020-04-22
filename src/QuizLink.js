@@ -13,10 +13,9 @@ const QuizLink = () => {
     return (
         <div className="link">
             <CopyToClipboard text={window.location.href} onCopy={handleClick}>
-                <Button size="medium" color="pink">
+                <Button overflow="true" size="medium" color="pink">
                     <Icon
                         color={active ? "green" : "grey"}
-                        fitted
                         name="linkify"
                         size="large"
                     />

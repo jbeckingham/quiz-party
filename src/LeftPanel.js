@@ -7,7 +7,7 @@ import FinishQuiz from "./FinishQuiz";
 const NewQuizLink = () => (
     <div className="new-quiz">
         <a href="/">
-            <Button size="medium" color="blue">
+            <Button fluid size="medium" color="blue">
                 Start a New Quiz
             </Button>
         </a>
