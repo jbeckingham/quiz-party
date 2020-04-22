@@ -30,14 +30,20 @@ class App extends Component {
 
     componentDidMount() {
         socket.on("stateUpdated", (gameState) => {
-            if (gameState.id == this.state.id) {
-                gameState.players.sort((a, b) => (a.name > b.name ? 1 : -1));
-                this.setState({ gameState: gameState });
-                let myName = this.getName(gameState);
-                this.setState({
-                    myName: myName,
-                    joined: myName ? true : false,
-                });
+            if (!gameState) {
+                window.location.replace("/");
+            } else {
+                if (gameState.id == this.state.id) {
+                    gameState.players.sort((a, b) =>
+                        a.name > b.name ? 1 : -1
+                    );
+                    this.setState({ gameState: gameState });
+                    let myName = this.getName(gameState);
+                    this.setState({
+                        myName: myName,
+                        joined: myName ? true : false,
+                    });
+                }
             }
         });
     }

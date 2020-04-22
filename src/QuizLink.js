@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Icon, Menu } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const QuizLink = () => {

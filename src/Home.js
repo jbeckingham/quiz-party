@@ -1,65 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input, Form, Button, Grid, GridRow } from "semantic-ui-react";
 
-class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
+const Home = ({ handleSubmit }) => {
+    const [name, setName] = useState("");
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    const onChange = (event) => setName(event.target.value);
 
-    handleChange(event) {
-        this.setState({
-            value: event.target.value,
-        });
-    }
-
-    handleSubmit(event) {
+    const onSubmit = (event) => {
         event.preventDefault();
-        this.props.handleSubmit(this.state.value);
-    }
+        handleSubmit(name);
+    };
 
-    render() {
-        return (
-            <Grid
-                textAlign="center"
-                style={{ height: "100vh" }}
-                verticalAlign="middle"
-            >
-                <Grid.Row>
-                    <Grid.Column>
-                        <div>
-                            <Grid textAlign="center">
-                                <GridRow>
-                                    <Form onSubmit={this.handleSubmit}>
-                                        <Form.Field>
-                                            <Input
-                                                placeholder="Give your quiz a name!"
-                                                size="massive"
-                                                onChange={this.handleChange}
-                                            />
-                                        </Form.Field>
-                                        <Button
-                                            disabled={!this.state.value}
-                                            type="submit"
-                                            size="huge"
-                                            primary
-                                            color="blue"
+    return (
+        <Grid
+            textAlign="center"
+            style={{ height: "100vh" }}
+            verticalAlign="middle"
+        >
+            <Grid.Row>
+                <Grid.Column>
+                    <div>
+                        <Grid textAlign="center">
+                            <GridRow>
+                                <Form onSubmit={onSubmit}>
+                                    <Form.Field>
+                                        <Input
+                                            placeholder="Give your quiz a name!"
                                             size="massive"
-                                        >
-                                            Start a new quiz
-                                        </Button>
-                                    </Form>
-                                </GridRow>
-                            </Grid>
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-    }
-}
+                                            onChange={onChange}
+                                        />
+                                    </Form.Field>
+                                    <Button
+                                        disabled={!name}
+                                        type="submit"
+                                        size="huge"
+                                        primary
+                                        color="blue"
+                                        size="massive"
+                                    >
+                                        Start a new quiz
+                                    </Button>
+                                </Form>
+                            </GridRow>
+                        </Grid>
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
+};
 
 export default Home;

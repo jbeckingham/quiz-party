@@ -38,8 +38,8 @@ class App extends Component {
         });
     }
 
-    onNewQuiz = () => {
-        socket.emit("newQuiz", { name: this.state.name });
+    onNewQuiz = (name) => {
+        socket.emit("newQuiz", { name: name });
     };
 
     render() {
