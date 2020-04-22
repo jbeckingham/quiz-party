@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Label, Table, Header } from "semantic-ui-react";
+import { Label, Table, Header } from "semantic-ui-react";
 
 const AnswerView = ({ gameState }) => {
     return (
@@ -9,7 +9,7 @@ const AnswerView = ({ gameState }) => {
     );
 };
 
-function Answers({ answers }) {
+const Answers = ({ answers }) => {
     if (answers) {
         return (
             <Table basic="very">
@@ -28,6 +28,6 @@ function Answers({ answers }) {
             </Table>
         );
     }
-}
+};
 
 export default AnswerView;
