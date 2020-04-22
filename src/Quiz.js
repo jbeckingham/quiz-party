@@ -4,18 +4,10 @@ import "./App.css";
 import "semantic-ui-css/semantic.min.css";
 import JoinView from "./JoinView";
 import QuizView from "./QuizView";
+import FinishView from "./FinishView";
 import { Grid } from "semantic-ui-react";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
-import LeftPanel from "./LeftPanel";
-
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useParams,
-} from "react-router-dom";
 
 const socket = socketIOClient("http://127.0.0.1:5000");
 
@@ -30,7 +22,7 @@ class App extends Component {
         this.state = {
             myName: "",
             joined: false,
-            gameState: { players: [] },
+            gameState: { players: [], active: true },
             id: id,
         };
         socket.emit("getState", { id: this.state.id });
@@ -97,6 +89,10 @@ class App extends Component {
         });
     };
 
+    onFinishSubmitted = () => {
+        socket.emit("finish", { id: this.state.id });
+    };
+
     getCookieName = () => {
         const { cookies } = this.props;
         return cookies.get("quizParty") &&
@@ -129,24 +125,32 @@ class App extends Component {
                         <div>
                             {this.state.joined ? (
                                 <div>
-                                    <LeftPanel
-                                        gameState={this.state.gameState}
-                                        onLeaveSubmitted={this.onLeaveSubmitted}
-                                    />
-                                    <QuizView
-                                        gameState={this.state.gameState}
-                                        myName={this.state.myName}
-                                        onAnswerSubmitted={
-                                            this.onAnswerSubmitted
-                                        }
-                                        onQuestionSubmitted={
-                                            this.onQuestionSubmitted
-                                        }
-                                        onResultsSubmitted={
-                                            this.onResultsSubmitted
-                                        }
-                                        onMarkNow={this.onMarkNow}
-                                    />
+                                    {this.state.gameState.active ? (
+                                        <QuizView
+                                            gameState={this.state.gameState}
+                                            myName={this.state.myName}
+                                            onAnswerSubmitted={
+                                                this.onAnswerSubmitted
+                                            }
+                                            onQuestionSubmitted={
+                                                this.onQuestionSubmitted
+                                            }
+                                            onResultsSubmitted={
+                                                this.onResultsSubmitted
+                                            }
+                                            onMarkNow={this.onMarkNow}
+                                            onLeaveSubmitted={
+                                                this.onLeaveSubmitted
+                                            }
+                                            onFinishSubmitted={
+                                                this.onFinishSubmitted
+                                            }
+                                        />
+                                    ) : (
+                                        <FinishView
+                                            gameState={this.state.gameState}
+                                        />
+                                    )}
                                 </div>
                             ) : (
                                 <JoinView

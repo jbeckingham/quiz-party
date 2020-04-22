@@ -1,63 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input, Form, Message, Button } from "semantic-ui-react";
 
-class NameForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: "",
-        };
+const NameForm = ({ gameState, handleSubmit }) => {
+    const [value, setValue] = useState("");
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({
-            value: event.target.value,
-        });
-    }
-
-    handleSubmit(event) {
+    const onChange = (event) => setValue(event.target.value);
+    const onSubmit = (event) => {
         event.preventDefault();
-        this.props.handleSubmit(this.state.value);
-    }
+        handleSubmit(value);
+    };
 
-    render() {
-        let playerNames = this.props.gameState.players.map(
-            (player) => player.name
-        );
-        let nameTaken = playerNames.includes(this.state.value);
-        return (
-            <div>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Field>
-                        <Input
-                            placeholder="Name"
-                            size="massive"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Button
-                        disabled={!this.state.value || nameTaken}
-                        type="submit"
-                        size="huge"
-                        primary
-                        color="blue"
+    let playerNames = gameState.players.map((player) => player.name);
+    let nameTaken = playerNames.includes(value);
+    return (
+        <>
+            <Form onSubmit={onSubmit}>
+                <Form.Field>
+                    <Input
+                        placeholder="Name"
                         size="massive"
-                    >
-                        Join
-                    </Button>
-                </Form>
-                {nameTaken && (
-                    <Message
-                        error
-                        content="Someone is already using that name."
+                        onChange={onChange}
                     />
-                )}
-            </div>
-        );
-    }
-}
+                </Form.Field>
+                <Button
+                    disabled={!value || nameTaken}
+                    type="submit"
+                    size="huge"
+                    primary
+                    color="blue"
+                >
+                    Join
+                </Button>
+            </Form>
+            {nameTaken && (
+                <Message error content="Someone is already using that name." />
+            )}
+        </>
+    );
+};
 
 export default NameForm;

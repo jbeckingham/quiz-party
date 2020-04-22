@@ -10,7 +10,7 @@ const getColour = (i) => {
 const JoinView = ({ onNameSubmitted, gameState }) => (
     <Grid textAlign="center">
         <GridRow>
-            <Header as="h1">Join the party!</Header>
+            <Header as="h1">Enter your name to join the quiz!</Header>
         </GridRow>
         <GridRow>
             {gameState.players.map((player, i) => (

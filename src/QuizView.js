@@ -4,7 +4,8 @@ import AnswerForm from "./AnswerForm";
 import Players from "./Players";
 import ResultForm from "./ResultForm";
 import MarkNow from "./MarkNow";
-import { Header, Grid, Label, Table } from "semantic-ui-react";
+import { Header, Grid } from "semantic-ui-react";
+import LeftPanel from "./LeftPanel";
 
 const AnswersPendingView = ({ gameState, onMarkNow, myName }) => {
     const playersAnswered = Object.keys(gameState.currentQuestion.answers);
@@ -100,10 +101,19 @@ const QuizView = ({
     onQuestionSubmitted,
     onResultsSubmitted,
     onMarkNow,
+    onLeaveSubmitted,
+    onFinishSubmitted,
 }) => (
-    <Grid columns={2}>
+    <Grid columns={3}>
         <Grid.Row>
-            <Grid.Column width={12}>
+            <Grid.Column width={3}>
+                <LeftPanel
+                    gameState={gameState}
+                    onLeaveSubmitted={onLeaveSubmitted}
+                    onFinishSubmitted={onFinishSubmitted}
+                />
+            </Grid.Column>
+            <Grid.Column width={10}>
                 <Grid
                     textAlign="center"
                     style={{ height: "100vh" }}
@@ -121,7 +131,7 @@ const QuizView = ({
                     </Grid.Column>
                 </Grid>
             </Grid.Column>
-            <Grid.Column width={4}>
+            <Grid.Column width={3}>
                 <Players players={gameState.players} />
             </Grid.Column>
         </Grid.Row>

@@ -39,7 +39,10 @@
 }
 
 .left-panel {
-    float: left;
     margin-left: 40px;
     margin-top: 50px;
+}
+
+.left-panel > .row {
+    padding-bottom: 5px;
 }

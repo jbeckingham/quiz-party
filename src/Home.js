@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Form, Message, Button, Grid, GridRow } from "semantic-ui-react";
+import { Input, Form, Button, Grid, GridRow } from "semantic-ui-react";
 
 class Home extends React.Component {
     constructor(props) {
@@ -23,28 +23,40 @@ class Home extends React.Component {
 
     render() {
         return (
-            <Grid textAlign="center">
-                <GridRow>
-                    <Form onSubmit={this.handleSubmit}>
-                        <Form.Field>
-                            <Input
-                                placeholder="Give your quiz a name!"
-                                size="massive"
-                                onChange={this.handleChange}
-                            />
-                        </Form.Field>
-                        <Button
-                            disabled={!this.state.value}
-                            type="submit"
-                            size="huge"
-                            primary
-                            color="blue"
-                            size="massive"
-                        >
-                            Start a new quiz
-                        </Button>
-                    </Form>
-                </GridRow>
+            <Grid
+                textAlign="center"
+                style={{ height: "100vh" }}
+                verticalAlign="middle"
+            >
+                <Grid.Row>
+                    <Grid.Column>
+                        <div>
+                            <Grid textAlign="center">
+                                <GridRow>
+                                    <Form onSubmit={this.handleSubmit}>
+                                        <Form.Field>
+                                            <Input
+                                                placeholder="Give your quiz a name!"
+                                                size="massive"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Form.Field>
+                                        <Button
+                                            disabled={!this.state.value}
+                                            type="submit"
+                                            size="huge"
+                                            primary
+                                            color="blue"
+                                            size="massive"
+                                        >
+                                            Start a new quiz
+                                        </Button>
+                                    </Form>
+                                </GridRow>
+                            </Grid>
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
             </Grid>
         );
     }
