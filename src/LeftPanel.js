@@ -6,53 +6,33 @@ import FinishQuiz from "./FinishQuiz";
 
 const NewQuizLink = () => (
     <div className="new-quiz">
-        <Form size="massive" style={{ margin: "auto" }}>
+        <a href="/">
             <Button size="medium" color="blue">
                 Start a New Quiz
             </Button>
-        </Form>
+        </a>
     </div>
 );
 
-class LeftPanel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            confirmOpen: false,
-        };
-        this.onLeaveSubmitted = props.onLeaveSubmitted.bind(this);
-        this.onFinishSubmitted = props.onFinishSubmitted.bind(this);
-    }
-
-    show = () => this.setState({ confirmOpen: true });
-    handleCancel = () => this.setState({ confirmOpen: false });
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.setState({ confirmOpen: false });
-        this.props.handleSubmit();
-    }
-
-    render() {
-        return (
-            <div className="left-panel">
-                <Grid>
-                    <GridRow>
-                        <NewQuizLink />
-                    </GridRow>
-                    <GridRow>
-                        <FinishQuiz handleSubmit={this.onFinishSubmitted} />
-                    </GridRow>
-                    <GridRow>
-                        <QuizLink />
-                    </GridRow>
-                    <GridRow>
-                        <LeaveForm handleSubmit={this.onLeaveSubmitted} />
-                    </GridRow>
-                </Grid>
-            </div>
-        );
-    }
-}
+const LeftPanel = ({ onLeaveSubmitted, onFinishSubmitted }) => {
+    return (
+        <div className="left-panel">
+            <Grid>
+                <GridRow>
+                    <NewQuizLink />
+                </GridRow>
+                <GridRow>
+                    <FinishQuiz handleSubmit={onFinishSubmitted} />
+                </GridRow>
+                <GridRow>
+                    <QuizLink />
+                </GridRow>
+                <GridRow>
+                    <LeaveForm handleSubmit={onLeaveSubmitted} />
+                </GridRow>
+            </Grid>
+        </div>
+    );
+};
 
 export default LeftPanel;
