@@ -12,6 +12,7 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
 
 const socket = socketIOClient("http://127.0.0.1:5000");
 
@@ -33,13 +34,12 @@ class App extends Component {
                 connected: true,
             });
         });
-        socket.on("quizAdded", (id) => {
-            window.location.assign("/quiz/" + id);
-        });
     }
 
     onNewQuiz = (name) => {
-        socket.emit("newQuiz", { name: name });
+        socket.emit("newQuiz", { name: name }, (id) => {
+            window.location.assign("/quiz/" + id);
+        });
     };
 
     render() {
@@ -53,7 +53,10 @@ class App extends Component {
                             <Route exact path="/">
                                 <Home handleSubmit={this.onNewQuiz} />
                             </Route>
-                            <Route path="/quiz/:id" component={Quiz} />
+                            <CookiesProvider>
+                                <Route path="/quiz/:id" component={Quiz} />
+                            </CookiesProvider>
+
                             <Redirect to="/" />
                         </Switch>
                     )}
