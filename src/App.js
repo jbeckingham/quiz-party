@@ -14,7 +14,9 @@ import {
 } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
-const socket = socketIOClient(process.env.API_ENDPOINT);
+require("dotenv").config();
+
+const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT);
 
 class App extends Component {
     static propTypes = {
