@@ -1,3 +1,4 @@
+require("dotenv").config();
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import "./App.css";
@@ -14,7 +15,7 @@ import {
 } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
-const socket = socketIOClient("http://127.0.0.1:5000");
+const socket = socketIOClient(process.env.API_ENDPOINT);
 
 class App extends Component {
     static propTypes = {

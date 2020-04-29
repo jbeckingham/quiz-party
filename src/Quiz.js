@@ -21,7 +21,7 @@ const Quiz = ({ match }) => {
 
     useEffect(() => {
         const socket = socketIOClient(
-            "http://127.0.0.1:5000",
+            process.env.API_ENDPOINT,
             {
                 query: {
                     id: id,
