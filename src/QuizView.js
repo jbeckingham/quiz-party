@@ -50,12 +50,15 @@ const MainPanel = ({
     onQuestionSubmitted,
     onResultsSubmitted,
     onMarkNow,
+    onTyping,
 }) => {
     if (!gameState.currentQuestion) {
         return (
             <QuestionForm
                 gameState={gameState}
                 handleSubmit={onQuestionSubmitted}
+                onTyping={onTyping}
+                myName={myName}
             />
         );
     }
@@ -103,6 +106,7 @@ const QuizView = ({
     onMarkNow,
     onLeaveSubmitted,
     onFinishSubmitted,
+    onTyping,
 }) => (
     <Grid columns={3}>
         <Grid.Column width={3}>
@@ -126,6 +130,7 @@ const QuizView = ({
                         onQuestionSubmitted={onQuestionSubmitted}
                         onResultsSubmitted={onResultsSubmitted}
                         onMarkNow={onMarkNow}
+                        onTyping={onTyping}
                     />
                 </Grid.Column>
             </Grid>

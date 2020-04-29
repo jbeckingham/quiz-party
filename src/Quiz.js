@@ -17,22 +17,22 @@ const Quiz = ({ match }) => {
 
     const [myName, setMyName] = useState("");
     const [joined, setJoined] = useState(false);
-    const [gameState, setGameState] = useState({ players: [], active: true });
+    const [gameState, setGameState] = useState({
+        players: [],
+        active: true,
+        typing: [],
+    });
 
     useEffect(() => {
-        const socket = socketIOClient(
-            process.env.REACT_APP_API_ENDPOINT,
-            {
-                query: {
-                    id: id,
-                },
+        const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, {
+            query: {
+                id: id,
             },
-            (gameState) => {
-                const name = getName(gameState);
-                setMyName(name);
-                setJoined(name ? true : false);
-            }
-        );
+        });
+        const name = getCookieName(gameState);
+        setMyName(name);
+        setJoined(name ? true : false);
+
         setSocket(socket);
         socket.on("stateUpdated", (gameState) => {
             if (!gameState) {
@@ -86,6 +86,10 @@ const Quiz = ({ match }) => {
         socket.emit("finish", { id: id });
     };
 
+    const onTyping = (active) => {
+        socket.emit("typing", { id: id, name: myName, active: active });
+    };
+
     const getCookieName = () => {
         return cookies.quizParty && cookies.quizParty.quizId == id
             ? cookies.quizParty.name
@@ -126,6 +130,7 @@ const Quiz = ({ match }) => {
                                         onMarkNow={onMarkNow}
                                         onLeaveSubmitted={onLeaveSubmitted}
                                         onFinishSubmitted={onFinishSubmitted}
+                                        onTyping={onTyping}
                                     />
                                 ) : (
                                     <FinishView gameState={gameState} />
