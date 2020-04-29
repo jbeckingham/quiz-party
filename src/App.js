@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-import "./App.css";
 import "semantic-ui-css/semantic.min.css";
+import "./App.css";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 import Home from "./Home";

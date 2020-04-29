@@ -105,36 +105,34 @@ const QuizView = ({
     onFinishSubmitted,
 }) => (
     <Grid columns={3}>
-        <Grid.Row>
-            <Grid.Column width={3}>
-                <LeftPanel
-                    gameState={gameState}
-                    onLeaveSubmitted={onLeaveSubmitted}
-                    onFinishSubmitted={onFinishSubmitted}
-                />
-            </Grid.Column>
-            <Grid.Column width={10}>
-                <Grid
-                    textAlign="center"
-                    style={{ height: "100vh" }}
-                    verticalAlign="middle"
-                >
-                    <Grid.Column>
-                        <MainPanel
-                            gameState={gameState}
-                            myName={myName}
-                            onAnswerSubmitted={onAnswerSubmitted}
-                            onQuestionSubmitted={onQuestionSubmitted}
-                            onResultsSubmitted={onResultsSubmitted}
-                            onMarkNow={onMarkNow}
-                        />
-                    </Grid.Column>
-                </Grid>
-            </Grid.Column>
-            <Grid.Column width={3}>
-                <Players players={gameState.players} />
-            </Grid.Column>
-        </Grid.Row>
+        <Grid.Column width={3}>
+            <LeftPanel
+                gameState={gameState}
+                onLeaveSubmitted={onLeaveSubmitted}
+                onFinishSubmitted={onFinishSubmitted}
+            />
+        </Grid.Column>
+        <Grid.Column width={10}>
+            <Grid
+                textAlign="center"
+                style={{ height: "100vh" }}
+                verticalAlign="middle"
+            >
+                <Grid.Column>
+                    <MainPanel
+                        gameState={gameState}
+                        myName={myName}
+                        onAnswerSubmitted={onAnswerSubmitted}
+                        onQuestionSubmitted={onQuestionSubmitted}
+                        onResultsSubmitted={onResultsSubmitted}
+                        onMarkNow={onMarkNow}
+                    />
+                </Grid.Column>
+            </Grid>
+        </Grid.Column>
+        <Grid.Column width={3}>
+            <Players players={gameState.players} />
+        </Grid.Column>
     </Grid>
 );
 export default QuizView;
