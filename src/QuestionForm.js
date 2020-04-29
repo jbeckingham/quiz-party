@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { Form, Button, TextArea, Header, Message } from "semantic-ui-react";
 
+const joinWords = (words) => {
+    if (words.length === 1) {
+        return words.slice(-1)[0];
+    }
+    return words.slice(0, -1).join(", ") + " and " + words.slice(-1)[0];
+};
+
 const QuestionForm = ({ handleSubmit, gameState, onTyping, myName }) => {
     const [value, setValue] = useState("");
     const [timeoutHandle, setTimeoutHandle] = useState(null);
 
     const onChange = (event) => {
         setValue(event.target.value);
-        onTyping(event.target.value ? 1 : 0);
+        onTyping(Boolean(event.target.value));
         if (timeoutHandle) {
             clearTimeout(timeoutHandle);
         }
         setTimeoutHandle(
             setTimeout(() => {
-                onTyping(0);
-            }, 5000)
+                onTyping(false);
+            }, 3000)
         );
     };
 
@@ -29,7 +36,7 @@ const QuestionForm = ({ handleSubmit, gameState, onTyping, myName }) => {
     const typingText = typing.length == 1 ? " is typing..." : " are typing...";
     const typingMessage = typing.length ? (
         <p>
-            {typing.join(", ")} {typingText}
+            {joinWords(typing)} {typingText}
         </p>
     ) : null;
 
