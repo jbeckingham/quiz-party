@@ -5,6 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 import JoinView from "./JoinView";
 import QuizView from "./QuizView";
 import FinishView from "./FinishView";
+import Notification from "./Notification";
 import { Grid } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
 
@@ -85,7 +86,7 @@ const Quiz = ({ match }) => {
     };
 
     const onFinishSubmitted = () => {
-        socket.emit("finish", { id: id });
+        socket.emit("finish", { id: id, name: myName });
     };
 
     const onTyping = (active) => {
@@ -109,6 +110,7 @@ const Quiz = ({ match }) => {
                     <div>
                         {joined ? (
                             <div>
+                                <Notification gameState={gameState} />
                                 {gameState.active ? (
                                     <QuizView
                                         gameState={gameState}

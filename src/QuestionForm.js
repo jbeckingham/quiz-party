@@ -52,6 +52,7 @@ const QuestionForm = ({ handleSubmit, gameState, onTyping, myName }) => {
                     <TextArea
                         placeholder="Ask a question..."
                         onChange={onChange}
+                        autofocus
                     />
                 </Form.Field>
                 {typingMessage}

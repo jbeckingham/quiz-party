@@ -1,4 +1,5 @@
 import React from "react";
+import Notification from "./Notification";
 import { Header, Grid, Label, Table, Button, GridRow } from "semantic-ui-react";
 
 const getColour = (i) => {

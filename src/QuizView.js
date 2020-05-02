@@ -4,8 +4,9 @@ import AnswerForm from "./AnswerForm";
 import Players from "./Players";
 import ResultForm from "./ResultForm";
 import MarkNow from "./MarkNow";
-import { Header, Grid } from "semantic-ui-react";
+import { Header, Grid, Message } from "semantic-ui-react";
 import LeftPanel from "./LeftPanel";
+import Notification from "./Notification";
 
 const AnswersPendingView = ({ gameState, onMarkNow, myName }) => {
     const playersAnswered = Object.keys(gameState.currentQuestion.answers);
