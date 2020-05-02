@@ -28,6 +28,7 @@ const Home = ({ handleSubmit }) => {
                                             placeholder="Give your quiz a name!"
                                             size="massive"
                                             onChange={onChange}
+                                            autoFocus
                                         />
                                     </Form.Field>
                                     <Button

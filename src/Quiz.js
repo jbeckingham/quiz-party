@@ -29,6 +29,8 @@ const Quiz = ({ match }) => {
                 id: id,
             },
         });
+        // Initially allow player in if they have a cookie for the quiz, we will check they are
+        // in the players array after the stateUpdate has been sent back by the server
         const name = getCookieName(gameState);
         setMyName(name);
         setJoined(name ? true : false);
@@ -48,7 +50,7 @@ const Quiz = ({ match }) => {
         setCookie("quizParty", { name: name, quizId: id });
         setMyName(name);
         setJoined(true);
-        socket.emit("join", { id: id, name: name });
+        socket.emit("join", { id, name });
     };
 
     const onQuestionSubmitted = (question) => {
@@ -94,17 +96,6 @@ const Quiz = ({ match }) => {
         return cookies.quizParty && cookies.quizParty.quizId == id
             ? cookies.quizParty.name
             : "";
-    };
-
-    const getName = (gameState) => {
-        const players = gameState.players.map((player) => player.name);
-        const cookieName = getCookieName();
-        if (cookieName && players.includes(cookieName)) {
-            return cookieName;
-        }
-        // If cookie name isn't in players array, player will have to rejoin
-        //removeCookie("quizParty");
-        return "";
     };
 
     return (

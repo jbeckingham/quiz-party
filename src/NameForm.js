@@ -20,6 +20,7 @@ const NameForm = ({ gameState, handleSubmit }) => {
                         placeholder="Name"
                         size="massive"
                         onChange={onChange}
+                        autoFocus
                     />
                 </Form.Field>
                 <Button
