@@ -18,46 +18,49 @@ const NewQuizLink = () => (
 );
 
 const FinishView = ({ gameState }) => (
-    <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
-        <Grid.Row>
-            <Grid.Column>
-                <Grid textAlign="center">
-                    <GridRow>
-                        <Header as="h1">The results are in!</Header>
-                    </GridRow>
-                    <GridRow>
-                        <Table textAlign="center" basic="very">
-                            <Table.Body>
-                                {gameState.players.map((player, i) => (
-                                    <Table.Row key={player.name}>
-                                        <Table.Cell>
-                                            <Label
-                                                as="a"
-                                                color={getColour(i)}
-                                                size="huge"
-                                                style={{
-                                                    textAlign: "center",
-                                                }}
-                                            >
-                                                {player.name}
-                                            </Label>
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Header size="huge">
-                                                {player.score}
-                                            </Header>
-                                        </Table.Cell>
-                                    </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
-                    </GridRow>
-                    <GridRow>
-                        <NewQuizLink />
-                    </GridRow>
-                </Grid>
-            </Grid.Column>
-        </Grid.Row>
-    </Grid>
+    <>
+        <Notification gameState={gameState} />
+        <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+            <Grid.Row>
+                <Grid.Column>
+                    <Grid textAlign="center">
+                        <GridRow>
+                            <Header as="h1">The results are in!</Header>
+                        </GridRow>
+                        <GridRow>
+                            <Table textAlign="center" basic="very">
+                                <Table.Body>
+                                    {gameState.players.map((player, i) => (
+                                        <Table.Row key={player.name}>
+                                            <Table.Cell>
+                                                <Label
+                                                    as="a"
+                                                    color={getColour(i)}
+                                                    size="huge"
+                                                    style={{
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    {player.name}
+                                                </Label>
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <Header size="huge">
+                                                    {player.score}
+                                                </Header>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table>
+                        </GridRow>
+                        <GridRow>
+                            <NewQuizLink />
+                        </GridRow>
+                    </Grid>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    </>
 );
 export default FinishView;

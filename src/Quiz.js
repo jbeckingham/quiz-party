@@ -55,6 +55,15 @@ const Quiz = ({ match }) => {
                 time: 5000,
             });
         });
+        socket.on("quizFinished", (name) => {
+            toast({
+                animation: "fly down",
+                type: "success",
+                icon: "none",
+                description: name + " has finished the quiz!",
+                time: 20000,
+            });
+        });
     }, []);
 
     const onNameSubmitted = (name) => {
