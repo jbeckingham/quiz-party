@@ -1,5 +1,6 @@
 body {
     background: aliceblue;
+    text-align: center;
 }
 
 .App {
@@ -25,7 +26,16 @@ body {
 }
 
 .notification {
+    align-items: center;
+    position: fixed;
+    display: flex;
+    width: 100%;
+    min-width: 600px;
+    flex-direction: column;
     top: 10px;
-    position: absolute;
-    right: 45%;
+    z-index: 999;
+}
+
+.notification i {
+    display: none !important;
 }

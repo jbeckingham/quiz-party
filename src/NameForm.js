@@ -23,6 +23,12 @@ const NameForm = ({ gameState, handleSubmit }) => {
                         autoFocus
                     />
                 </Form.Field>
+                {nameTaken && (
+                    <Message
+                        error
+                        content="Someone is already using that name."
+                    />
+                )}
                 <Button
                     disabled={!value || nameTaken}
                     type="submit"
@@ -33,9 +39,6 @@ const NameForm = ({ gameState, handleSubmit }) => {
                     Join
                 </Button>
             </Form>
-            {nameTaken && (
-                <Message error content="Someone is already using that name." />
-            )}
         </>
     );
 };

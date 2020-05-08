@@ -8,6 +8,7 @@ import FinishView from "./FinishView";
 import Notification from "./Notification";
 import { Grid } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
+import { toast } from "react-semantic-toasts";
 
 const Quiz = ({ match }) => {
     const id = match.params.id;
@@ -30,20 +31,29 @@ const Quiz = ({ match }) => {
                 id: id,
             },
         });
-        // Initially allow player in if they have a cookie for the quiz, we will check they are
-        // in the players array after the stateUpdate has been sent back by the server
+
         const name = getCookieName(gameState);
         setMyName(name);
         setJoined(name ? true : false);
 
         setSocket(socket);
         socket.on("stateUpdated", (gameState) => {
+            console.log("state update");
             if (!gameState) {
                 window.location.replace("/");
             } else {
                 gameState.players.sort((a, b) => (a.name > b.name ? 1 : -1));
                 setGameState(gameState);
             }
+        });
+        socket.on("playerLeft", (name) => {
+            toast({
+                animation: "fly down",
+                type: "warning",
+                icon: "none",
+                description: name + " has left the quiz",
+                time: 5000,
+            });
         });
     }, []);
 
@@ -100,207 +110,54 @@ const Quiz = ({ match }) => {
     };
 
     return (
-        <Grid
-            textAlign="center"
-            style={{ height: "100vh" }}
-            verticalAlign="middle"
-        >
-            <Grid.Row>
-                <Grid.Column>
-                    <div>
-                        {joined ? (
-                            <div>
-                                <Notification gameState={gameState} />
-                                {gameState.active ? (
-                                    <QuizView
-                                        gameState={gameState}
-                                        myName={myName}
-                                        onAnswerSubmitted={onAnswerSubmitted}
-                                        onQuestionSubmitted={
-                                            onQuestionSubmitted
-                                        }
-                                        onResultsSubmitted={onResultsSubmitted}
-                                        onMarkNow={onMarkNow}
-                                        onLeaveSubmitted={onLeaveSubmitted}
-                                        onFinishSubmitted={onFinishSubmitted}
-                                        onTyping={onTyping}
-                                    />
-                                ) : (
-                                    <FinishView gameState={gameState} />
-                                )}
-                            </div>
-                        ) : (
-                            <JoinView
-                                gameState={gameState}
-                                onNameSubmitted={onNameSubmitted}
-                            />
-                        )}
-                    </div>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        <>
+            <Grid
+                textAlign="center"
+                style={{ height: "100vh" }}
+                verticalAlign="middle"
+            >
+                <Grid.Row>
+                    <Grid.Column>
+                        <div>
+                            {joined ? (
+                                <div>
+                                    <Notification gameState={gameState} />
+                                    {gameState.active ? (
+                                        <QuizView
+                                            gameState={gameState}
+                                            myName={myName}
+                                            onAnswerSubmitted={
+                                                onAnswerSubmitted
+                                            }
+                                            onQuestionSubmitted={
+                                                onQuestionSubmitted
+                                            }
+                                            onResultsSubmitted={
+                                                onResultsSubmitted
+                                            }
+                                            onMarkNow={onMarkNow}
+                                            onLeaveSubmitted={onLeaveSubmitted}
+                                            onFinishSubmitted={
+                                                onFinishSubmitted
+                                            }
+                                            onTyping={onTyping}
+                                        />
+                                    ) : (
+                                        <FinishView gameState={gameState} />
+                                    )}
+                                </div>
+                            ) : (
+                                <JoinView
+                                    gameState={gameState}
+                                    onNameSubmitted={onNameSubmitted}
+                                />
+                            )}
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </>
     );
 };
-
-// class App extends Component {
-//     static propTypes = {
-//         cookies: instanceOf(Cookies).isRequired,
-//     };
-
-//     constructor(props) {
-//         super(props);
-//         let id = props.match.params.id;
-//         this.state = {
-//             myName: "",
-//             joined: false,
-//             gameState: { players: [], active: true },
-//             id: id,
-//         };
-//         socket.emit("getState", { id: this.state.id });
-//     }
-
-//     componentDidMount() {
-//         socket.on("stateUpdated", (gameState) => {
-//             if (!gameState) {
-//                 window.location.replace("/");
-//             } else {
-//                 if (gameState.id == this.state.id) {
-//                     gameState.players.sort((a, b) =>
-//                         a.name > b.name ? 1 : -1
-//                     );
-//                     this.setState({ gameState: gameState });
-//                     let myName = this.getName(gameState);
-//                     this.setState({
-//                         myName: myName,
-//                         joined: myName ? true : false,
-//                     });
-//                 }
-//             }
-//         });
-//     }
-
-//     onNameSubmitted = (name) => {
-//         const { cookies } = this.props;
-//         socket.emit("join", { id: this.state.id, name: name });
-//         this.setState({
-//             myName: name,
-//             joined: true,
-//         });
-//         cookies.set("quizParty", { name: name, quizId: this.state.id });
-//     };
-
-//     onQuestionSubmitted = (question) => {
-//         socket.emit("ask", {
-//             id: this.state.id,
-//             name: this.state.myName,
-//             text: question,
-//         });
-//     };
-
-//     onAnswerSubmitted = (answer) => {
-//         this.setState({
-//             answered: true,
-//         });
-//         socket.emit("answer", {
-//             id: this.state.id,
-//             name: this.state.myName,
-//             answer: answer,
-//         });
-//     };
-
-//     onResultsSubmitted = (markedAnswers) => {
-//         socket.emit("results", { id: this.state.id, results: markedAnswers });
-//     };
-
-//     onMarkNow = () => {
-//         socket.emit("forceMark", { id: this.state.id });
-//     };
-
-//     onLeaveSubmitted = () => {
-//         const { cookies } = this.props;
-//         socket.emit("leave", { id: this.state.id, name: this.state.myName });
-//         cookies.remove("quizParty");
-//         this.setState({
-//             myName: "",
-//             joined: false,
-//         });
-//     };
-
-//     onFinishSubmitted = () => {
-//         socket.emit("finish", { id: this.state.id });
-//     };
-
-//     getCookieName = () => {
-//         const { cookies } = this.props;
-//         return cookies.get("quizParty") &&
-//             cookies.get("quizParty").quizId == this.state.id
-//             ? cookies.get("quizParty").name
-//             : "";
-//     };
-
-//     getName = (gameState) => {
-//         const { cookies } = this.props;
-//         let players = gameState.players.map((player) => player.name);
-//         let cookieName = this.getCookieName();
-//         if (cookieName && players.includes(cookieName)) {
-//             return cookieName;
-//         }
-//         // If cookie name isn't in players array, player will have to rejoin
-//         cookies.remove("quizParty");
-//         return "";
-//     };
-
-//     render() {
-//         return (
-//             <Grid
-//                 textAlign="center"
-//                 style={{ height: "100vh" }}
-//                 verticalAlign="middle"
-//             >
-//                 <Grid.Row>
-//                     <Grid.Column>
-//                         <div>
-//                             {this.state.joined ? (
-//                                 <div>
-//                                     {this.state.gameState.active ? (
-//                                         <QuizView
-//                                             gameState={this.state.gameState}
-//                                             myName={this.state.myName}
-//                                             onAnswerSubmitted={
-//                                                 this.onAnswerSubmitted
-//                                             }
-//                                             onQuestionSubmitted={
-//                                                 this.onQuestionSubmitted
-//                                             }
-//                                             onResultsSubmitted={
-//                                                 this.onResultsSubmitted
-//                                             }
-//                                             onMarkNow={this.onMarkNow}
-//                                             onLeaveSubmitted={
-//                                                 this.onLeaveSubmitted
-//                                             }
-//                                             onFinishSubmitted={
-//                                                 this.onFinishSubmitted
-//                                             }
-//                                         />
-//                                     ) : (
-//                                         <FinishView
-//                                             gameState={this.state.gameState}
-//                                         />
-//                                     )}
-//                                 </div>
-//                             ) : (
-//                                 <JoinView
-//                                     gameState={this.state.gameState}
-//                                     onNameSubmitted={this.onNameSubmitted}
-//                                 />
-//                             )}
-//                         </div>
-//                     </Grid.Column>
-//                 </Grid.Row>
-//             </Grid>
-//         );
-//     }
-// }
 
 export default Quiz;

@@ -1,13 +1,10 @@
 import React from "react";
-import { Message } from "semantic-ui-react";
+import { SemanticToastContainer } from "react-semantic-toasts";
 
-const Notification = ({ gameState }) => {
-    console.log(gameState);
+const Notification = () => {
     return (
-        <div class="notification">
-            {gameState.notification && (
-                <Message warning content={gameState.notification} />
-            )}
+        <div className="notification">
+            <SemanticToastContainer className="container" />
         </div>
     );
 };
