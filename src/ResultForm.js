@@ -7,9 +7,11 @@ const getColour = (i) => {
 };
 
 const resultOptions = [
-    { key: "correct", value: 1, text: "Correct" },
-    { key: "half", value: 0.5, text: "I'll give ya half" },
-    { key: "incorrect", value: 0, text: "Incorrect" },
+    { key: "2", value: 2, text: "2" },
+    { key: "1.5", value: 1.5, text: "1.5" },
+    { key: "1", value: 1, text: "1" },
+    { key: "0.5", value: 0.5, text: "0.5" },
+    { key: "0", value: 0, text: "0" },
 ];
 
 const ResultForm = ({ gameState, handleSubmit }) => {
@@ -37,7 +39,7 @@ const ResultForm = ({ gameState, handleSubmit }) => {
         <div>
             {answers.length ? (
                 <Form onSubmit={onSubmit} style={{ margin: "auto" }}>
-                    <Table basic="very">
+                    <Table basic="very" unstackable>
                         <Table.Body>
                             {answers.map((name, i) => (
                                 <Table.Row key={name}>
@@ -62,6 +64,7 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                     <Table.Cell>
                                         <Header>
                                             <Select
+                                                style={{ minWidth: "80px" }}
                                                 onChange={(event, data) =>
                                                     onChange(data.value, name)
                                                 }
