@@ -67,3 +67,7 @@ body {
 .main-quiz-mobile .join-header {
     width: 80%;
 }
+
+.main-quiz-mobile .notification {
+    min-width: 0px;
+}
