@@ -61,6 +61,7 @@ body {
 
 .main-quiz-mobile {
     height: 80vh;
+    max-width: 468;
 }
 
 .main-quiz-mobile .join-header {

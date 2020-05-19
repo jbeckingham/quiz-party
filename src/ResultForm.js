@@ -54,7 +54,7 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                         </Label>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        <Header size="huge">
+                                        <Header size="medium">
                                             {
                                                 gameState.currentQuestion
                                                     .answers[name]
