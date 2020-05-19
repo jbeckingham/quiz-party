@@ -48,24 +48,6 @@ const Quiz = ({ match }) => {
                 setGameState(gameState);
             }
         });
-        socket.on("playerLeft", (name) => {
-            toast({
-                animation: "fly down",
-                type: "warning",
-                icon: "none",
-                description: name + " has left the quiz",
-                time: 5000,
-            });
-        });
-        socket.on("quizFinished", (name) => {
-            toast({
-                animation: "fly down",
-                type: "success",
-                icon: "none",
-                description: name + " has finished the quiz!",
-                time: 20000,
-            });
-        });
     }, []);
 
     const onNameSubmitted = (name) => {
@@ -100,6 +82,7 @@ const Quiz = ({ match }) => {
     };
 
     const onLeaveSubmitted = () => {
+        unsubscribeFromNotifiations();
         socket.emit("leave", { id: id, name: myName });
         removeCookie("quizParty");
         setMyName("");
@@ -120,6 +103,11 @@ const Quiz = ({ match }) => {
             : "";
     };
 
+    const unsubscribeFromNotifiations = () => {
+        socket.off("playerLeft");
+        socket.off("quizFinished");
+    };
+
     return (
         <>
             <Grid
@@ -132,7 +120,10 @@ const Quiz = ({ match }) => {
                         <div>
                             {joined ? (
                                 <div>
-                                    <Notification gameState={gameState} />
+                                    <Notification
+                                        gameState={gameState}
+                                        socket={socket}
+                                    />
                                     {gameState.active ? (
                                         <QuizView
                                             gameState={gameState}
@@ -153,6 +144,7 @@ const Quiz = ({ match }) => {
                                             }
                                             onTyping={onTyping}
                                             isMobile={isMobile}
+                                            socket={socket}
                                         />
                                     ) : (
                                         <FinishView gameState={gameState} />
