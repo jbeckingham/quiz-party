@@ -16,6 +16,13 @@ body {
     margin-top: 50px;
 }
 
+.players-mobile {
+    margin-top: 30px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
 .left-panel {
     margin-left: 40px;
     margin-top: 50px;
@@ -38,4 +45,12 @@ body {
 
 .notification i {
     display: none !important;
+}
+
+.anagram {
+    text-align: center;
+}
+
+.left-panel-mobile button {
+    min-width: 88px;
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const QuizLink = () => {
+const QuizLink = ({ isMobile }) => {
     const [active, setActive] = useState(false);
 
     const handleClick = () => {
@@ -10,16 +10,23 @@ const QuizLink = () => {
         setTimeout(() => setActive(false), 3000);
     };
 
+    const linkText = (isMobile, active) => {
+        if (!isMobile) {
+            return active ? " Copied to clipboard" : "Copy link to quiz";
+        }
+        return active ? " Copied" : "Link";
+    };
+
     return (
         <div className="link">
             <CopyToClipboard text={window.location.href} onCopy={handleClick}>
                 <Button overflow="true" size="medium" color="pink">
                     <Icon
-                        color={active ? "green" : "grey"}
+                        color={active ? "green" : "white"}
                         name="linkify"
-                        size="large"
+                        size={!isMobile ? "large" : "small"}
                     />
-                    {active ? " Copied to clipboard!" : "Copy link to quiz"}
+                    {linkText(isMobile, active)}
                 </Button>
             </CopyToClipboard>
         </div>

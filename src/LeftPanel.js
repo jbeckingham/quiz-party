@@ -4,34 +4,67 @@ import LeaveForm from "./LeaveForm";
 import QuizLink from "./QuizLink";
 import FinishQuiz from "./FinishQuiz";
 
-const NewQuizLink = () => (
+const NewQuizLink = ({ isMobile }) => (
     <div className="new-quiz">
         <a href="/">
             <Button fluid size="medium" color="blue">
-                Start a New Quiz
+                {!isMobile ? "Start a New Quiz" : "New"}
             </Button>
         </a>
     </div>
 );
 
-const LeftPanel = ({ onLeaveSubmitted, onFinishSubmitted }) => {
+const LeftPanel = ({ onLeaveSubmitted, onFinishSubmitted, isMobile }) => {
     return (
-        <div className="left-panel">
-            <Grid>
-                <GridRow>
-                    <NewQuizLink />
-                </GridRow>
-                <GridRow>
-                    <FinishQuiz handleSubmit={onFinishSubmitted} />
-                </GridRow>
-                <GridRow>
-                    <QuizLink />
-                </GridRow>
-                <GridRow>
-                    <LeaveForm handleSubmit={onLeaveSubmitted} />
-                </GridRow>
-            </Grid>
-        </div>
+        <>
+            {!isMobile ? (
+                <div className="left-panel">
+                    <Grid>
+                        <GridRow>
+                            <NewQuizLink isMobile={isMobile} />
+                        </GridRow>
+                        <GridRow>
+                            <FinishQuiz
+                                handleSubmit={onFinishSubmitted}
+                                isMobile={isMobile}
+                            />
+                        </GridRow>
+                        <GridRow>
+                            <QuizLink isMobile={isMobile} />
+                        </GridRow>
+                        <GridRow>
+                            <LeaveForm
+                                handleSubmit={onLeaveSubmitted}
+                                isMobile={isMobile}
+                            />
+                        </GridRow>
+                    </Grid>
+                </div>
+            ) : (
+                <div className="left-panel-mobile">
+                    <Grid>
+                        <Grid.Column width={4}>
+                            <NewQuizLink isMobile={isMobile} />
+                        </Grid.Column>
+                        <Grid.Column width={4}>
+                            <FinishQuiz
+                                handleSubmit={onFinishSubmitted}
+                                isMobile={isMobile}
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={4}>
+                            <QuizLink isMobile={isMobile} />
+                        </Grid.Column>
+                        <Grid.Column width={4}>
+                            <LeaveForm
+                                handleSubmit={onLeaveSubmitted}
+                                isMobile={isMobile}
+                            />
+                        </Grid.Column>
+                    </Grid>
+                </div>
+            )}
+        </>
     );
 };
 

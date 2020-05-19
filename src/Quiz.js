@@ -120,11 +120,7 @@ const Quiz = ({ match }) => {
 
     return (
         <>
-            <Grid
-                textAlign="center"
-                style={{ height: "100vh" }}
-                verticalAlign="middle"
-            >
+            <Grid textAlign="center" verticalAlign="middle">
                 <Grid.Row>
                     <Grid.Column>
                         <div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Confirm } from "semantic-ui-react";
 
-const FinishQuiz = ({ handleSubmit }) => {
+const FinishQuiz = ({ handleSubmit, isMobile }) => {
     const [open, setOpen] = useState(false);
 
     const show = () => setOpen(true);
@@ -17,7 +17,7 @@ const FinishQuiz = ({ handleSubmit }) => {
         <div className="finish">
             <Form size="massive" style={{ margin: "auto" }}>
                 <Button size="medium" color="yellow" onClick={show}>
-                    Finish Quiz
+                    {!isMobile ? "Finish Quiz" : "Finish"}
                 </Button>
                 <Confirm
                     open={open}

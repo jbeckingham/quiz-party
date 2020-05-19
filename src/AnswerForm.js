@@ -17,11 +17,11 @@ const AnswerForm = ({ handleSubmit }) => {
         <Form
             onSubmit={onSubmit}
             size="massive"
-            style={{ width: "50%", margin: "auto" }}
+            style={{ width: "80%", margin: "auto" }}
         >
             <Header as="h2">Enter your answer:</Header>
             <Form.Field>
-                <Input onChange={onChange} />
+                <Input placeholder="Your answer..." onChange={onChange} />
             </Form.Field>
             <Button type="submit" size="huge" primary>
                 Submit

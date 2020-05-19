@@ -6,7 +6,8 @@ import ResultForm from "./ResultForm";
 import MarkNow from "./MarkNow";
 import { Header, Grid, Message } from "semantic-ui-react";
 import LeftPanel from "./LeftPanel";
-import Notification from "./Notification";
+
+const isMobile = window.innerWidth < 468;
 
 const AnswersPendingView = ({ gameState, onMarkNow, myName }) => {
     const playersAnswered = Object.keys(gameState.currentQuestion.answers);
@@ -109,36 +110,86 @@ const QuizView = ({
     onFinishSubmitted,
     onTyping,
 }) => (
-    <Grid columns={3}>
-        <Grid.Column width={3}>
-            <LeftPanel
-                gameState={gameState}
-                onLeaveSubmitted={onLeaveSubmitted}
-                onFinishSubmitted={onFinishSubmitted}
-            />
-        </Grid.Column>
-        <Grid.Column width={10}>
-            <Grid
-                textAlign="center"
-                style={{ height: "100vh" }}
-                verticalAlign="middle"
-            >
-                <Grid.Column>
-                    <MainPanel
+    <>
+        {!isMobile ? (
+            <Grid columns={3}>
+                <Grid.Column width={3}>
+                    <LeftPanel
                         gameState={gameState}
-                        myName={myName}
-                        onAnswerSubmitted={onAnswerSubmitted}
-                        onQuestionSubmitted={onQuestionSubmitted}
-                        onResultsSubmitted={onResultsSubmitted}
-                        onMarkNow={onMarkNow}
-                        onTyping={onTyping}
+                        onLeaveSubmitted={onLeaveSubmitted}
+                        onFinishSubmitted={onFinishSubmitted}
                     />
                 </Grid.Column>
+                <Grid.Column width={10}>
+                    <Grid
+                        textAlign="center"
+                        style={{ height: "100vh" }}
+                        verticalAlign="middle"
+                    >
+                        <Grid.Column>
+                            <MainPanel
+                                gameState={gameState}
+                                myName={myName}
+                                onAnswerSubmitted={onAnswerSubmitted}
+                                onQuestionSubmitted={onQuestionSubmitted}
+                                onResultsSubmitted={onResultsSubmitted}
+                                onMarkNow={onMarkNow}
+                                onTyping={onTyping}
+                            />
+                        </Grid.Column>
+                    </Grid>
+                </Grid.Column>
+                <Grid.Column width={3}>
+                    <Players players={gameState.players} />
+                </Grid.Column>
             </Grid>
-        </Grid.Column>
-        <Grid.Column width={3}>
-            <Players players={gameState.players} />
-        </Grid.Column>
-    </Grid>
+        ) : (
+            <div>
+                <Grid
+                    columns={1}
+                    style={{ padding: "10px" }}
+                    verticalAlign="middle"
+                >
+                    <Grid.Row>
+                        <Grid.Column>
+                            <LeftPanel
+                                gameState={gameState}
+                                onLeaveSubmitted={onLeaveSubmitted}
+                                onFinishSubmitted={onFinishSubmitted}
+                                isMobile={isMobile}
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row style={{ marginTop: "50px", minHeight: "275px" }}>
+                        <Grid.Column>
+                            <Grid textAlign="center">
+                                <Grid.Column>
+                                    <MainPanel
+                                        gameState={gameState}
+                                        myName={myName}
+                                        onAnswerSubmitted={onAnswerSubmitted}
+                                        onQuestionSubmitted={
+                                            onQuestionSubmitted
+                                        }
+                                        onResultsSubmitted={onResultsSubmitted}
+                                        onMarkNow={onMarkNow}
+                                        onTyping={onTyping}
+                                    />
+                                </Grid.Column>
+                            </Grid>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column textAlign="center">
+                            <Players
+                                players={gameState.players}
+                                isMobile={isMobile}
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </div>
+        )}
+    </>
 );
 export default QuizView;

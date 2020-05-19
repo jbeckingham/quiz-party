@@ -36,10 +36,7 @@ const ResultForm = ({ gameState, handleSubmit }) => {
     return (
         <div>
             {answers.length ? (
-                <Form
-                    onSubmit={onSubmit}
-                    style={{ width: "50%", margin: "auto" }}
-                >
+                <Form onSubmit={onSubmit} style={{ margin: "auto" }}>
                     <Table basic="very">
                         <Table.Body>
                             {answers.map((name, i) => (

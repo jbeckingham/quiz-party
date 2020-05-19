@@ -42,12 +42,12 @@ const QuestionForm = ({ handleSubmit, gameState, onTyping, myName }) => {
 
     return (
         <div>
+            <Header as="h1">Somebody ask a question</Header>
             <Form
                 onSubmit={onSubmit}
                 size="massive"
-                style={{ width: "50%", margin: "auto" }}
+                style={{ width: "80%", margin: "auto" }}
             >
-                <Header as="h1">Somebody ask a question</Header>
                 <Form.Field>
                     <TextArea
                         placeholder="Ask a question..."

@@ -6,25 +6,32 @@ const getColour = (i) => {
     return colours[i % colours.length];
 };
 
-const Players = ({ players }) => (
-    <div className="players">
-        <h1>Scores</h1>
-        <Table basic="very">
+const Players = ({ players, isMobile }) => (
+    <div className={isMobile ? "players-mobile" : "players"}>
+        <Header
+            size={isMobile ? "medium" : "huge"}
+            style={{ marginBottom: "0px" }}
+        >
+            Players
+        </Header>
+        <Table basic="very" style={{ maxWidth: "100px" }} unstackable>
             <Table.Body>
                 {players.map((player, i) => (
                     <Table.Row key={player.name}>
-                           <Table.Cell>
+                        <Table.Cell>
                             <Label
                                 as="a"
                                 color={getColour(i)}
-                                size="huge"
+                                size={isMobile ? "medium" : "huge"}
                                 style={{ textAlign: "center" }}
                             >
                                 {player.name}
                             </Label>
                         </Table.Cell>
                         <Table.Cell>
-                            <Header size="huge">{player.score}</Header>
+                            <Header size={isMobile ? "medium" : "huge"}>
+                                {player.score}
+                            </Header>
                         </Table.Cell>
                     </Table.Row>
                 ))}
