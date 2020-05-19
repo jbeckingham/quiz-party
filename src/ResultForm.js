@@ -7,11 +7,11 @@ const getColour = (i) => {
 };
 
 const resultOptions = [
-    { key: "2", value: 2, text: "2" },
-    { key: "1.5", value: 1.5, text: "1.5" },
-    { key: "1", value: 1, text: "1" },
-    { key: "0.5", value: 0.5, text: "0.5" },
     { key: "0", value: 0, text: "0" },
+    { key: "0.5", value: 0.5, text: "0.5" },
+    { key: "1", value: 1, text: "1" },
+    { key: "1.5", value: 1.5, text: "1.5" },
+    { key: "2", value: 2, text: "2" },
 ];
 
 const ResultForm = ({ gameState, handleSubmit }) => {
