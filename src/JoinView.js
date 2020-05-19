@@ -10,7 +10,9 @@ const getColour = (i) => {
 const JoinView = ({ onNameSubmitted, gameState }) => (
     <Grid textAlign="center">
         <GridRow>
-            <Header as="h1">Enter your name to join {gameState.name}!</Header>
+            <Header className="join-header" as="h1">
+                Enter your name to join {gameState.name}!
+            </Header>
         </GridRow>
         <GridRow>
             {gameState.players.map((player, i) => (

@@ -54,3 +54,15 @@ body {
 .left-panel-mobile button {
     min-width: 88px;
 }
+
+.main-quiz {
+    height: 100vh;
+}
+
+.main-quiz-mobile {
+    height: 80vh;
+}
+
+.main-quiz-mobile .join-header {
+    width: 80%;
+}

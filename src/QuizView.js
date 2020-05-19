@@ -7,8 +7,6 @@ import MarkNow from "./MarkNow";
 import { Header, Grid, Message } from "semantic-ui-react";
 import LeftPanel from "./LeftPanel";
 
-const isMobile = window.innerWidth < 468;
-
 const AnswersPendingView = ({ gameState, onMarkNow, myName }) => {
     const playersAnswered = Object.keys(gameState.currentQuestion.answers);
     const questionAskedByMe = gameState.currentQuestion.name === myName;
@@ -109,6 +107,7 @@ const QuizView = ({
     onLeaveSubmitted,
     onFinishSubmitted,
     onTyping,
+    isMobile,
 }) => (
     <>
         {!isMobile ? (

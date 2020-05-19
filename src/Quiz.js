@@ -25,6 +25,8 @@ const Quiz = ({ match }) => {
         typing: [],
     });
 
+    const isMobile = window.innerWidth < 468;
+
     useEffect(() => {
         const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, {
             query: {
@@ -120,7 +122,11 @@ const Quiz = ({ match }) => {
 
     return (
         <>
-            <Grid textAlign="center" verticalAlign="middle">
+            <Grid
+                className={isMobile ? "main-quiz-mobile" : "main-quiz"}
+                textAlign="center"
+                verticalAlign="middle"
+            >
                 <Grid.Row>
                     <Grid.Column>
                         <div>
@@ -146,6 +152,7 @@ const Quiz = ({ match }) => {
                                                 onFinishSubmitted
                                             }
                                             onTyping={onTyping}
+                                            isMobile={isMobile}
                                         />
                                     ) : (
                                         <FinishView gameState={gameState} />
