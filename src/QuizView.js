@@ -108,6 +108,7 @@ const QuizView = ({
     onFinishSubmitted,
     onTyping,
     isMobile,
+    onShowScores,
 }) => (
     <>
         {!isMobile ? (
@@ -139,7 +140,12 @@ const QuizView = ({
                     </Grid>
                 </Grid.Column>
                 <Grid.Column width={3}>
-                    <Players players={gameState.players} />
+                    <Players
+                        players={gameState.players}
+                        showScores={gameState.showScores}
+                        isMobile={isMobile}
+                        onShowScores={onShowScores}
+                    />
                 </Grid.Column>
             </Grid>
         ) : (
@@ -182,7 +188,9 @@ const QuizView = ({
                         <Grid.Column textAlign="center">
                             <Players
                                 players={gameState.players}
+                                showScores={gameState.showScores}
                                 isMobile={isMobile}
+                                onShowScores={onShowScores}
                             />
                         </Grid.Column>
                     </Grid.Row>

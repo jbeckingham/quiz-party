@@ -44,7 +44,6 @@ const Quiz = ({ match }) => {
             if (!gameState) {
                 window.location.replace("/");
             } else {
-                gameState.players.sort((a, b) => (a.name > b.name ? 1 : -1));
                 setGameState(gameState);
             }
         });
@@ -70,6 +69,12 @@ const Quiz = ({ match }) => {
             id: id,
             name: myName,
             answer: answer,
+        });
+    };
+
+    const onShowScores = () => {
+        socket.emit("showScores", {
+            id: id,
         });
     };
 
@@ -145,6 +150,7 @@ const Quiz = ({ match }) => {
                                             onTyping={onTyping}
                                             isMobile={isMobile}
                                             socket={socket}
+                                            onShowScores={onShowScores}
                                         />
                                     ) : (
                                         <FinishView gameState={gameState} />
