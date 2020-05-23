@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Form, Button, Header, Table, Label, Select } from "semantic-ui-react";
 
-const getColour = (i) => {
-    const colours = ["teal", "pink", "yellow", "purple", "orange", "green"];
-    return colours[i % colours.length];
-};
+// const getColour = (i) => {
+//     const colours = ["teal", "pink", "yellow", "purple", "orange", "green"];
+//     return colours[i % colours.length];
+// };
 
 const resultOptions = [
     { key: "0", value: 0, text: "0" },
@@ -26,10 +26,11 @@ const ResultForm = ({ gameState, handleSubmit }) => {
         handleSubmit(results);
     };
 
-    const getPlayerColour = (name) => {
-        let names = gameState.players.map((player) => player.name);
-        let i = names.indexOf(name);
-        return getColour(i);
+    const getColour = (player, players) => {
+        const sortedPlayers = [...players].sort();
+        const i = sortedPlayers.indexOf(player);
+        const colours = ["teal", "pink", "yellow", "purple", "orange", "green"];
+        return colours[i % colours.length];
     };
 
     const answers = Object.keys(gameState.currentQuestion.answers);
@@ -47,7 +48,12 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                         <Label
                                             as="a"
                                             size="huge"
-                                            color={getPlayerColour(name)}
+                                            color={getColour(
+                                                name,
+                                                gameState.players.map(
+                                                    (player) => player.name
+                                                )
+                                            )}
                                             style={{ textAlign: "center" }}
                                         >
                                             {name}

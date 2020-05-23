@@ -6,6 +6,7 @@ import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 import Home from "./Home";
 import Quiz from "./Quiz";
+import Admin from "./Admin";
 import {
     BrowserRouter as Router,
     Switch,
@@ -58,7 +59,6 @@ class App extends Component {
                             <CookiesProvider>
                                 <Route path="/quiz/:id" component={Quiz} />
                             </CookiesProvider>
-
                             <Redirect to="/" />
                         </Switch>
                     )}
