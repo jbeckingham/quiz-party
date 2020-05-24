@@ -47,6 +47,13 @@ body {
     display: none !important;
 }
 
+.results-table {
+    align-items: center;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
 .anagram {
     text-align: center;
 }

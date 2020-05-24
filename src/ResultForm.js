@@ -40,11 +40,16 @@ const ResultForm = ({ gameState, handleSubmit }) => {
         <div>
             {answers.length ? (
                 <Form onSubmit={onSubmit} style={{ margin: "auto" }}>
-                    <Table basic="very" unstackable>
+                    <Table className="results-table" basic="very" unstackable>
                         <Table.Body>
                             {answers.map((name, i) => (
                                 <Table.Row key={name}>
-                                    <Table.Cell>
+                                    <Table.Cell
+                                        style={{
+                                            paddingRight: "50px",
+                                            paddingLeft: "50px",
+                                        }}
+                                    >
                                         <Label
                                             as="a"
                                             size="huge"
@@ -59,7 +64,12 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                             {name}
                                         </Label>
                                     </Table.Cell>
-                                    <Table.Cell>
+                                    <Table.Cell
+                                        style={{
+                                            paddingRight: "50px",
+                                            paddingLeft: "50px",
+                                        }}
+                                    >
                                         <Header size="medium">
                                             {
                                                 gameState.currentQuestion
@@ -67,7 +77,12 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                             }
                                         </Header>
                                     </Table.Cell>
-                                    <Table.Cell>
+                                    <Table.Cell
+                                        style={{
+                                            paddingRight: "50px",
+                                            paddingLeft: "50px",
+                                        }}
+                                    >
                                         <Header>
                                             <Select
                                                 style={{ minWidth: "80px" }}
