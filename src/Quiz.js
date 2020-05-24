@@ -8,10 +8,16 @@ import FinishView from "./FinishView";
 import Notification from "./Notification";
 import { Grid } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
-import { toast } from "react-semantic-toasts";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+} from "react-router-dom";
 
-const Quiz = ({ match }) => {
-    const id = match.params.id;
+const Quiz = ({ isMobile }) => {
+    const { id } = useParams();
 
     const [cookies, setCookie, removeCookie] = useCookies(["quizParty"]);
 
@@ -25,7 +31,7 @@ const Quiz = ({ match }) => {
         typing: [],
     });
 
-    const isMobile = window.innerWidth < 468;
+    // const isMobile = window.innerWidth < 902;
 
     useEffect(() => {
         const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, {

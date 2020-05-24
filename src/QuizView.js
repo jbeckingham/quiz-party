@@ -112,7 +112,7 @@ const QuizView = ({
 }) => (
     <>
         {!isMobile ? (
-            <Grid columns={3}>
+            <Grid relaxed columns={3}>
                 <Grid.Column width={3}>
                     <LeftPanel
                         gameState={gameState}

@@ -44,7 +44,7 @@ const ShowScoresButton = ({ showScores, onShowScores }) => {
     );
 };
 
-const Players = ({ players, showScores, isMobile, onShowScores }) => (
+const Players = ({ players, isMobile }) => (
     <div className={isMobile ? "players-mobile" : "players"}>
         <Header
             size={isMobile ? "medium" : "huge"}
@@ -55,15 +55,17 @@ const Players = ({ players, showScores, isMobile, onShowScores }) => (
         <Table basic="very" style={{ maxWidth: "100px" }} unstackable>
             <Table.Body>
                 {players
-                    .sort((a, b) => (a.score < b.score ? 1 : -1))
+                    .sort((a, b) => (a.score <= b.score ? 1 : -1))
                     .map((player, i) => (
                         <Table.Row key={player.name}>
                             <Table.Cell>
                                 <Label
                                     as="a"
                                     color={getColour(player, players)}
-                                    size={isMobile ? "medium" : "huge"}
-                                    style={{ textAlign: "center" }}
+                                    size={isMobile ? "medium" : "big"}
+                                    style={{
+                                        textAlign: "center",
+                                    }}
                                 >
                                     {player.name}
                                 </Label>

@@ -7,7 +7,7 @@ import FinishQuiz from "./FinishQuiz";
 const NewQuizLink = ({ isMobile }) => (
     <div className="new-quiz">
         <a href="/">
-            <Button fluid size="medium" color="blue">
+            <Button size="medium" color="blue">
                 {!isMobile ? "Start a New Quiz" : "New"}
             </Button>
         </a>

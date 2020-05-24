@@ -12,8 +12,10 @@ import {
     Switch,
     Route,
     Redirect,
+    useLocation,
 } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
+import { Responsive } from "semantic-ui-react";
 
 require("dotenv").config();
 
@@ -28,6 +30,7 @@ class App extends Component {
         super(props);
         this.state = {
             connected: false,
+            isMobile: window.innerWidth < 902,
         };
     }
 
@@ -45,25 +48,37 @@ class App extends Component {
         });
     };
 
+    handleOnUpdate = () => {
+        this.setState({
+            isMobile: window.innerWidth < 902,
+        });
+    };
+
     render() {
         return (
-            <Router>
-                <div id="main">
-                    {!this.state.connected ? (
-                        <p>Unable to connect</p>
-                    ) : (
-                        <Switch>
-                            <Route exact path="/">
-                                <Home handleSubmit={this.onNewQuiz} />
-                            </Route>
-                            <CookiesProvider>
-                                <Route path="/quiz/:id" component={Quiz} />
-                            </CookiesProvider>
-                            <Redirect to="/" />
-                        </Switch>
-                    )}
-                </div>
-            </Router>
+            <Responsive onUpdate={this.handleOnUpdate}>
+                <Router>
+                    <div id="main">
+                        {!this.state.connected ? (
+                            <p>Unable to connect</p>
+                        ) : (
+                            <Switch>
+                                <Route exact path="/">
+                                    <Home handleSubmit={this.onNewQuiz} />
+                                </Route>
+                                <CookiesProvider>
+                                    <Route path="/quiz/:id">
+                                        <Quiz
+                                            isMobile={this.state.isMobile}
+                                        ></Quiz>
+                                    </Route>
+                                </CookiesProvider>
+                                <Redirect to="/" />
+                            </Switch>
+                        )}
+                    </div>
+                </Router>
+            </Responsive>
         );
     }
 }
