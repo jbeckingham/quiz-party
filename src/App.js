@@ -6,13 +6,11 @@ import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 import Home from "./Home";
 import Quiz from "./Quiz";
-import Admin from "./Admin";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect,
-    useLocation,
 } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import { Responsive } from "semantic-ui-react";
