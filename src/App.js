@@ -67,7 +67,7 @@ class App extends Component {
                                     <Home handleSubmit={this.onNewQuiz} />
                                 </Route>
                                 <CookiesProvider>
-                                    <Route path="/quiz/:id">
+                                    <Route path="/quiz/:id/:admin?">
                                         <Quiz
                                             isMobile={this.state.isMobile}
                                         ></Quiz>

@@ -6,6 +6,7 @@ import JoinView from "./JoinView";
 import QuizView from "./QuizView";
 import FinishView from "./FinishView";
 import Notification from "./Notification";
+import Admin from "./Admin/Admin";
 import { Grid } from "semantic-ui-react";
 import { useCookies } from "react-cookie";
 import {
@@ -17,7 +18,7 @@ import {
 } from "react-router-dom";
 
 const Quiz = ({ isMobile }) => {
-    const { id } = useParams();
+    const { id, admin } = useParams();
 
     const [cookies, setCookie, removeCookie] = useCookies(["quizParty"]);
 
@@ -30,8 +31,6 @@ const Quiz = ({ isMobile }) => {
         active: true,
         typing: [],
     });
-
-    // const isMobile = window.innerWidth < 902;
 
     useEffect(() => {
         const socket = socketIOClient(process.env.REACT_APP_API_ENDPOINT, {
@@ -130,38 +129,50 @@ const Quiz = ({ isMobile }) => {
                     <Grid.Column>
                         <div>
                             {joined ? (
-                                <div>
-                                    <Notification
-                                        gameState={gameState}
-                                        socket={socket}
-                                    />
-                                    {gameState.active ? (
-                                        <QuizView
-                                            gameState={gameState}
-                                            myName={myName}
-                                            onAnswerSubmitted={
-                                                onAnswerSubmitted
-                                            }
-                                            onQuestionSubmitted={
-                                                onQuestionSubmitted
-                                            }
-                                            onResultsSubmitted={
-                                                onResultsSubmitted
-                                            }
-                                            onMarkNow={onMarkNow}
-                                            onLeaveSubmitted={onLeaveSubmitted}
-                                            onFinishSubmitted={
-                                                onFinishSubmitted
-                                            }
-                                            onTyping={onTyping}
-                                            isMobile={isMobile}
-                                            socket={socket}
-                                            onShowScores={onShowScores}
-                                        />
+                                <>
+                                    {admin ? (
+                                        <>
+                                            <Admin gameState={gameState} />
+                                        </>
                                     ) : (
-                                        <FinishView gameState={gameState} />
+                                        <div>
+                                            <Notification
+                                                gameState={gameState}
+                                                socket={socket}
+                                            />
+                                            {gameState.active ? (
+                                                <QuizView
+                                                    gameState={gameState}
+                                                    myName={myName}
+                                                    onAnswerSubmitted={
+                                                        onAnswerSubmitted
+                                                    }
+                                                    onQuestionSubmitted={
+                                                        onQuestionSubmitted
+                                                    }
+                                                    onResultsSubmitted={
+                                                        onResultsSubmitted
+                                                    }
+                                                    onMarkNow={onMarkNow}
+                                                    onLeaveSubmitted={
+                                                        onLeaveSubmitted
+                                                    }
+                                                    onFinishSubmitted={
+                                                        onFinishSubmitted
+                                                    }
+                                                    onTyping={onTyping}
+                                                    isMobile={isMobile}
+                                                    socket={socket}
+                                                    onShowScores={onShowScores}
+                                                />
+                                            ) : (
+                                                <FinishView
+                                                    gameState={gameState}
+                                                />
+                                            )}
+                                        </div>
                                     )}
-                                </div>
+                                </>
                             ) : (
                                 <JoinView
                                     gameState={gameState}
