@@ -19,6 +19,15 @@ const Notification = ({ socket }) => {
                 time: 20000,
             });
         });
+        socket.on("scoresAdjusted", (names, admin) => {
+            toast({
+                animation: "fly down",
+                type: "warning",
+                description:
+                    admin + " has adjusted the scores of: " + names.join(", "),
+                time: 20000,
+            });
+        });
     }, []);
     return (
         <div className="notification">

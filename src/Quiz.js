@@ -132,7 +132,11 @@ const Quiz = ({ isMobile }) => {
                                 <>
                                     {admin ? (
                                         <>
-                                            <Admin gameState={gameState} />
+                                            <Admin
+                                                gameState={gameState}
+                                                socket={socket}
+                                                myName={myName}
+                                            />
                                         </>
                                     ) : (
                                         <div>
