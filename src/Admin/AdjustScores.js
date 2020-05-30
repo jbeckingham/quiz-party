@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../App.css";
 import "semantic-ui-css/semantic.min.css";
-import { Modal, Button, Table, Form, Label, Input } from "semantic-ui-react";
+import { Button, Table, Form, Label, Input, Header } from "semantic-ui-react";
 
 const getColour = (player, players) => {
     const sortedPlayers = [...players].sort((a, b) =>
@@ -13,93 +13,62 @@ const getColour = (player, players) => {
 };
 
 const AdjustScores = ({ gameState, onAdjustScoresSubmitted }) => {
-    const [adjustments, setAdjustments] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const handleOpen = () => setModalOpen(true);
-
-    const handleClose = () => setModalOpen(false);
+    const initialScores = gameState.players.reduce(
+        (output, player) => ({
+            ...output,
+            [player.name]: player.score,
+        }),
+        {}
+    );
+    const [playerScores, setPlayerScores] = useState(initialScores);
 
     const onChange = (value, name) => {
-        setAdjustments({ ...adjustments, [name]: value });
+        setPlayerScores({ ...playerScores, [name]: value });
     };
     const onSubmit = (event) => {
         event.preventDefault();
-        onAdjustScoresSubmitted(adjustments);
-        handleClose();
+        onAdjustScoresSubmitted(playerScores);
     };
     return (
-        <Modal
-            trigger={
-                <Button onClick={handleOpen} size="medium" color="red">
-                    Adjust Scores
-                </Button>
-            }
-            open={modalOpen}
-            onClose={handleClose}
-        >
-            <Modal.Header>Adjust a player's score below</Modal.Header>
-            <Modal.Content>
-                <Modal.Description>
-                    <Form onSubmit={onSubmit}>
-                        <Table
-                            basic="very"
-                            style={{ maxWidth: "100px" }}
-                            unstackable
-                        >
-                            <Table.Body>
-                                {gameState.players
-                                    .sort((a, b) =>
-                                        a.score <= b.score ? 1 : -1
-                                    )
-                                    .map((player, i) => (
-                                        <Table.Row key={player.name}>
-                                            <Table.Cell>
-                                                <Label
-                                                    as="a"
-                                                    size="large"
-                                                    color={getColour(
-                                                        player,
-                                                        gameState.players
-                                                    )}
-                                                    style={{
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    {player.name}
-                                                </Label>
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Form.Field>
-                                                    <Input
-                                                        placeholder={
-                                                            player.score
-                                                        }
-                                                        size="large"
-                                                        onChange={(
-                                                            event,
-                                                            data
-                                                        ) =>
-                                                            onChange(
-                                                                data.value,
-                                                                player.name
-                                                            )
-                                                        }
-                                                        type="number"
-                                                    />
-                                                </Form.Field>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    ))}
-                            </Table.Body>
-                        </Table>
-                        <Button type="submit" size="huge" primary color="blue">
-                            Update Scores
-                        </Button>
-                    </Form>
-                </Modal.Description>
-            </Modal.Content>
-        </Modal>
+        <Form onSubmit={onSubmit} className="adjust-scores">
+            <Header>Adjust player scores:</Header>
+            <Table basic="very" style={{ maxWidth: "100px" }} unstackable>
+                <Table.Body>
+                    {gameState.players.map((player, i) => (
+                        <Table.Row key={player.name}>
+                            <Table.Cell>
+                                <Label
+                                    as="a"
+                                    size="large"
+                                    color={getColour(player, gameState.players)}
+                                    style={{
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    {player.name}
+                                </Label>
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Form.Field>
+                                    <Input
+                                        value={playerScores[player.name]}
+                                        size="large"
+                                        onChange={(event, data) =>
+                                            onChange(data.value, player.name, i)
+                                        }
+                                        type="number"
+                                        step={0.5}
+                                    />
+                                </Form.Field>
+                            </Table.Cell>
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
+            <Button type="submit" size="huge" primary color="blue">
+                Update Scores
+            </Button>
+        </Form>
     );
 };
 

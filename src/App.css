@@ -78,3 +78,8 @@ body {
 .main-quiz-mobile .notification {
     min-width: 0px;
 }
+
+.adjust-scores {
+    float: left;
+    margin: 20px;
+}
