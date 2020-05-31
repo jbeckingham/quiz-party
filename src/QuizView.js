@@ -29,7 +29,9 @@ const SubmitAnswerView = ({ gameState, onAnswerSubmitted }) => (
         <Header as="h2">
             {gameState.currentQuestion.name} asked a question:
         </Header>
-        <Header as="h1">{gameState.currentQuestion.text} </Header>
+        <Header as="h1" style={{ color: "#2d6fa7" }}>
+            {gameState.currentQuestion.text}{" "}
+        </Header>
         <AnswerForm gameState={gameState} handleSubmit={onAnswerSubmitted} />
     </div>
 );
