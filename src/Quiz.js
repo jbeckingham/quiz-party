@@ -45,7 +45,7 @@ const Quiz = ({ isMobile }) => {
 
         setSocket(socket);
         socket.on("stateUpdated", (gameState) => {
-            console.log("state update");
+            console.log(gameState);
             if (!gameState) {
                 window.location.replace("/");
             } else {
@@ -120,87 +120,78 @@ const Quiz = ({ isMobile }) => {
 
     return (
         <>
-            {!gameState.active ? (
-                <p>Unable to connect</p>
-            ) : (
-                <>
-                    <Grid
-                        className={isMobile ? "main-quiz-mobile" : "main-quiz"}
-                        textAlign="center"
-                        verticalAlign="middle"
-                    >
-                        <Grid.Row>
-                            <Grid.Column>
-                                <div>
-                                    {joined ? (
-                                        <>
-                                            {admin ? (
-                                                <>
-                                                    <Admin
+            <>
+                <Grid
+                    className={isMobile ? "main-quiz-mobile" : "main-quiz"}
+                    textAlign="center"
+                    verticalAlign="middle"
+                >
+                    <Grid.Row>
+                        <Grid.Column>
+                            <div>
+                                {joined ? (
+                                    <>
+                                        {admin ? (
+                                            <>
+                                                <Admin
+                                                    gameState={gameState}
+                                                    socket={socket}
+                                                    myName={myName}
+                                                />
+                                            </>
+                                        ) : (
+                                            <div>
+                                                <Notification
+                                                    gameState={gameState}
+                                                    socket={socket}
+                                                />
+                                                {gameState.active ? (
+                                                    <QuizView
                                                         gameState={gameState}
-                                                        socket={socket}
                                                         myName={myName}
+                                                        onAnswerSubmitted={
+                                                            onAnswerSubmitted
+                                                        }
+                                                        onQuestionSubmitted={
+                                                            onQuestionSubmitted
+                                                        }
+                                                        onResultsSubmitted={
+                                                            onResultsSubmitted
+                                                        }
+                                                        onMarkNow={onMarkNow}
+                                                        onLeaveSubmitted={
+                                                            onLeaveSubmitted
+                                                        }
+                                                        onFinishSubmitted={
+                                                            onFinishSubmitted
+                                                        }
+                                                        onTyping={onTyping}
+                                                        isMobile={isMobile}
+                                                        socket={socket}
+                                                        onShowScores={
+                                                            onShowScores
+                                                        }
                                                     />
-                                                </>
-                                            ) : (
-                                                <div>
-                                                    <Notification
+                                                ) : (
+                                                    <FinishView
                                                         gameState={gameState}
                                                         socket={socket}
                                                     />
-                                                    {gameState.active ? (
-                                                        <QuizView
-                                                            gameState={
-                                                                gameState
-                                                            }
-                                                            myName={myName}
-                                                            onAnswerSubmitted={
-                                                                onAnswerSubmitted
-                                                            }
-                                                            onQuestionSubmitted={
-                                                                onQuestionSubmitted
-                                                            }
-                                                            onResultsSubmitted={
-                                                                onResultsSubmitted
-                                                            }
-                                                            onMarkNow={
-                                                                onMarkNow
-                                                            }
-                                                            onLeaveSubmitted={
-                                                                onLeaveSubmitted
-                                                            }
-                                                            onFinishSubmitted={
-                                                                onFinishSubmitted
-                                                            }
-                                                            onTyping={onTyping}
-                                                            isMobile={isMobile}
-                                                            socket={socket}
-                                                            onShowScores={
-                                                                onShowScores
-                                                            }
-                                                        />
-                                                    ) : (
-                                                        <FinishView
-                                                            gameState={
-                                                                gameState
-                                                            }
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <JoinView
-                                            gameState={gameState}
-                                            onNameSubmitted={onNameSubmitted}
-                                        />
-                                    )}
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </>
-            )}
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <JoinView
+                                        gameState={gameState}
+                                        onNameSubmitted={onNameSubmitted}
+                                    />
+                                )}
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </>
         </>
     );
 };

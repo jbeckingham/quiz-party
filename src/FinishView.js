@@ -17,10 +17,14 @@ const NewQuizLink = () => (
     </div>
 );
 
-const FinishView = ({ gameState }) => (
+const FinishView = ({ gameState, socket }) => (
     <>
-        <Notification gameState={gameState} />
-        <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+        <Notification socket={socket} gameState={gameState} />
+        <Grid
+            textAlign="center"
+            style={{ height: "100vh" }}
+            verticalAlign="middle"
+        >
             <Grid.Row>
                 <Grid.Column>
                     <Grid textAlign="center">
@@ -28,7 +32,11 @@ const FinishView = ({ gameState }) => (
                             <Header as="h1">The results are in!</Header>
                         </GridRow>
                         <GridRow>
-                            <Table textAlign="center" basic="very">
+                            <Table
+                                textAlign="center"
+                                basic="very"
+                                syle={{ width: "50%" }}
+                            >
                                 <Table.Body>
                                     {gameState.players.map((player, i) => (
                                         <Table.Row key={player.name}>
