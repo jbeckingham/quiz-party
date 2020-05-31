@@ -44,12 +44,7 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                         <Table.Body>
                             {answers.map((name, i) => (
                                 <Table.Row key={name}>
-                                    <Table.Cell
-                                        style={{
-                                            paddingRight: "50px",
-                                            paddingLeft: "50px",
-                                        }}
-                                    >
+                                    <Table.Cell>
                                         <Label
                                             as="a"
                                             size="huge"
@@ -64,12 +59,7 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                             {name}
                                         </Label>
                                     </Table.Cell>
-                                    <Table.Cell
-                                        style={{
-                                            paddingRight: "50px",
-                                            paddingLeft: "50px",
-                                        }}
-                                    >
+                                    <Table.Cell>
                                         <Header size="medium">
                                             {
                                                 gameState.currentQuestion
@@ -77,15 +67,10 @@ const ResultForm = ({ gameState, handleSubmit }) => {
                                             }
                                         </Header>
                                     </Table.Cell>
-                                    <Table.Cell
-                                        style={{
-                                            paddingRight: "50px",
-                                            paddingLeft: "50px",
-                                        }}
-                                    >
+                                    <Table.Cell>
                                         <Header>
                                             <Select
-                                                style={{ minWidth: "80px" }}
+                                                style={{ minWidth: "50px" }}
                                                 onChange={(event, data) =>
                                                     onChange(data.value, name)
                                                 }

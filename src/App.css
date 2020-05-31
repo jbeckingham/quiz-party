@@ -50,7 +50,7 @@ body {
 .results-table {
     align-items: center;
     display: flex;
-    width: 100%;
+    width: 80%;
     flex-direction: column;
 }
 
