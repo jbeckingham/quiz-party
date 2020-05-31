@@ -144,7 +144,6 @@ const QuizView = ({
                         players={gameState.players}
                         showScores={gameState.showScores}
                         isMobile={isMobile}
-                        onShowScores={onShowScores}
                     />
                 </Grid.Column>
             </Grid>
@@ -190,7 +189,6 @@ const QuizView = ({
                                 players={gameState.players}
                                 showScores={gameState.showScores}
                                 isMobile={isMobile}
-                                onShowScores={onShowScores}
                             />
                         </Grid.Column>
                     </Grid.Row>

@@ -28,7 +28,7 @@ const Quiz = ({ isMobile }) => {
     const [joined, setJoined] = useState(false);
     const [gameState, setGameState] = useState({
         players: [],
-        active: false,
+        active: true,
         typing: [],
     });
 

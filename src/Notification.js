@@ -28,6 +28,17 @@ const Notification = ({ socket }) => {
                 time: 20000,
             });
         });
+        socket.on("scoresToggled", (value, admin) => {
+            const message = value
+                ? admin + " has just shown the scores"
+                : admin + " has just hidden the scores";
+            toast({
+                animation: "fly down",
+                type: "warning",
+                description: message,
+                time: 20000,
+            });
+        });
     }, []);
     return (
         <div className="notification">
