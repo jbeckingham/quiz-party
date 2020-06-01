@@ -11,7 +11,7 @@ const ShowScores = ({ gameState, onShowScoresSubmitted }) => {
     return (
         <Form onSubmit={onSubmit} className="show-scores">
             <Button type="submit" size="big" color="pink">
-                Show Scores
+                {gameState.showScores ? "Hide Scores" : "Show Scores"}
             </Button>
         </Form>
     );
