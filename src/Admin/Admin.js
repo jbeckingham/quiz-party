@@ -4,6 +4,7 @@ import "semantic-ui-css/semantic.min.css";
 import { Grid, Button, Header } from "semantic-ui-react";
 import AdjustScores from "./AdjustScores";
 import ShowScores from "./ShowScores";
+import RemovePlayer from "./RemovePlayer";
 
 const ReturnToQuiz = ({ id }) => {
     const link = "/quiz/" + id;
@@ -34,30 +35,49 @@ const Admin = ({ gameState, socket, myName }) => {
         });
     };
 
+    const onRemovePlayer = (name) => {
+        socket.emit("removePlayer", {
+            id: gameState.id,
+            name: name,
+            admin: myName,
+        });
+    };
+
     return (
         <>
             <Grid textAlign="center" verticalAlign="middle">
-                <Grid.Row>
-                    <Grid.Column>
-                        <Header as="h2">
-                            Admin Panel for {gameState.name}
-                        </Header>
-                        <p>
-                            Please only use the below actions if absolutely
-                            necessary. The other players in the game will be
-                            notified by any actions you take.
-                        </p>
+                <Grid.Column>
+                    <Header as="h2">Admin Panel for {gameState.name}</Header>
+                    <p>
+                        Please only use the below actions if absolutely
+                        necessary. The other players in the game will be
+                        notified by any actions you take.
+                    </p>
+                    <div className="admin-buttons">
                         <ReturnToQuiz id={gameState.id} />
                         <ShowScores
                             gameState={gameState}
                             onShowScoresSubmitted={onShowScoresSubmitted}
                         />
-                        <AdjustScores
-                            gameState={gameState}
-                            onAdjustScoresSubmitted={onAdjustScoresSubmitted}
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                    </div>
+                    <Grid columns={2}>
+                        <Grid.Column>
+                            <AdjustScores
+                                gameState={gameState}
+                                onAdjustScoresSubmitted={
+                                    onAdjustScoresSubmitted
+                                }
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <RemovePlayer
+                                gameState={gameState}
+                                onRemovePlayer={onRemovePlayer}
+                                myName={myName}
+                            />
+                        </Grid.Column>
+                    </Grid>
+                </Grid.Column>
             </Grid>
         </>
     );

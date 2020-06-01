@@ -12,26 +12,14 @@ const getColour = (player, players) => {
     return colours[i % colours.length];
 };
 
-const AdjustScores = ({ gameState, onAdjustScoresSubmitted }) => {
-    const initialScores = gameState.players.reduce(
-        (output, player) => ({
-            ...output,
-            [player.name]: player.score,
-        }),
-        {}
-    );
-    const [playerScores, setPlayerScores] = useState(initialScores);
-
-    const onChange = (value, name) => {
-        setPlayerScores({ ...playerScores, [name]: value });
-    };
+const RemovePlayer = ({ gameState, onRemovePlayer, myName }) => {
     const onSubmit = (event) => {
         event.preventDefault();
-        onAdjustScoresSubmitted(playerScores);
+        onRemovePlayer(event.target.id);
     };
     return (
-        <Form onSubmit={onSubmit} className="adjust-scores">
-            <Header>Adjust player scores:</Header>
+        <>
+            <Header>Remove a player from the game:</Header>
             <Table basic="very" style={{ maxWidth: "100px" }} unstackable>
                 <Table.Body>
                     {gameState.players.map((player, i) => (
@@ -50,27 +38,23 @@ const AdjustScores = ({ gameState, onAdjustScoresSubmitted }) => {
                             </Table.Cell>
                             <Table.Cell>
                                 <Form.Field>
-                                    <Input
-                                        value={playerScores[player.name]}
-                                        size="large"
-                                        onChange={(event, data) =>
-                                            onChange(data.value, player.name, i)
-                                        }
-                                        type="number"
-                                        step={0.5}
-                                        style={{ maxWidth: "100px" }}
-                                    />
+                                    <Button
+                                        disabled={player.name == myName}
+                                        id={player.name}
+                                        onClick={onSubmit}
+                                        size="medium"
+                                        color="orange"
+                                    >
+                                        Remove
+                                    </Button>
                                 </Form.Field>
                             </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
             </Table>
-            <Button type="submit" size="huge" primary color="blue">
-                Update Scores
-            </Button>
-        </Form>
+        </>
     );
 };
 
-export default AdjustScores;
+export default RemovePlayer;

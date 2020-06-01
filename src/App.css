@@ -87,3 +87,10 @@ body {
 .question-asked {
     color: "blue";
 }
+
+.admin-buttons {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}

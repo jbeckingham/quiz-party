@@ -28,6 +28,14 @@ const Notification = ({ socket }) => {
                 time: 20000,
             });
         });
+        socket.on("playerRemoved", (name, admin) => {
+            toast({
+                animation: "fly down",
+                type: "warning",
+                description: admin + " kicked out " + name + " from the quiz.",
+                time: 20000,
+            });
+        });
         socket.on("scoresToggled", (value, admin) => {
             const message = value
                 ? admin + " has just shown the scores"
