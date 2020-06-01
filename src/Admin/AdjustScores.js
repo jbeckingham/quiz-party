@@ -22,10 +22,20 @@ const AdjustScores = ({ gameState, onAdjustScoresSubmitted }) => {
     );
     const [playerScores, setPlayerScores] = useState(initialScores);
 
+    const [active, setActive] = useState(false);
+
+    const handleClick = () => {
+        setActive(true);
+        setTimeout(() => setActive(false), 3000);
+    };
+
+    const buttonText = () => (active ? " Scores Updated!" : "Update Scores");
+
     const onChange = (value, name) => {
         setPlayerScores({ ...playerScores, [name]: value });
     };
     const onSubmit = (event) => {
+        handleClick();
         event.preventDefault();
         onAdjustScoresSubmitted(playerScores);
     };
@@ -66,8 +76,8 @@ const AdjustScores = ({ gameState, onAdjustScoresSubmitted }) => {
                     ))}
                 </Table.Body>
             </Table>
-            <Button type="submit" size="huge" primary color="blue">
-                Update Scores
+            <Button type="submit" size="huge" color={active ? "green" : "blue"}>
+                {buttonText()}
             </Button>
         </Form>
     );

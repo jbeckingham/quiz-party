@@ -46,9 +46,19 @@ const Quiz = ({ isMobile }) => {
                 window.location.replace("/");
             } else {
                 setGameState(gameState);
+                verifyPlayerInQuiz(gameState, name);
             }
         });
     }, []);
+
+    const verifyPlayerInQuiz = (gameState, name) => {
+        const players = gameState.players.map((player) => player.name);
+        if (!players.includes(name)) {
+            removeCookie("quizParty");
+            setMyName("");
+            setJoined(false);
+        }
+    };
 
     const onNameSubmitted = (name) => {
         setCookie("quizParty", { name: name, quizId: id });
