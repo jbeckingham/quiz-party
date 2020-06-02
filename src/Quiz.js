@@ -49,6 +49,14 @@ const Quiz = ({ isMobile }) => {
         });
     }, []);
 
+    const playerInQuiz = (name, state) => {
+        const players = state.players.map((player) => player.name);
+        if (players.includes(name)) {
+            return true;
+        }
+        return false;
+    };
+
     const onNameSubmitted = (name) => {
         setCookie("quizParty", { name: name, quizId: id });
         setMyName(name);
@@ -125,7 +133,8 @@ const Quiz = ({ isMobile }) => {
                         <Grid.Row>
                             <Grid.Column>
                                 <div>
-                                    {joined ? (
+                                    {joined &&
+                                    playerInQuiz(myName, gameState) ? (
                                         <>
                                             {admin ? (
                                                 <>
