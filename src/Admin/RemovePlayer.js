@@ -20,7 +20,11 @@ const RemovePlayer = ({ gameState, onRemovePlayer, myName }) => {
     return (
         <>
             <Header>Remove a player from the game:</Header>
-            <Table basic="very" style={{ maxWidth: "100px" }} unstackable>
+            <Table
+                basic="very"
+                style={{ maxWidth: "100px", marginLeft: "25px" }}
+                unstackable
+            >
                 <Table.Body>
                     {gameState.players.map((player, i) => (
                         <Table.Row key={player.name}>

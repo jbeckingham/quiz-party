@@ -19,7 +19,7 @@ const ReturnToQuiz = ({ id }) => {
     );
 };
 
-const Admin = ({ gameState, socket, myName }) => {
+const Admin = ({ gameState, socket, myName, isMobile }) => {
     const onAdjustScoresSubmitted = (scores) => {
         socket.emit("adjustScores", {
             id: gameState.id,
@@ -60,23 +60,52 @@ const Admin = ({ gameState, socket, myName }) => {
                             onShowScoresSubmitted={onShowScoresSubmitted}
                         />
                     </div>
-                    <Grid columns={2}>
-                        <Grid.Column>
-                            <AdjustScores
-                                gameState={gameState}
-                                onAdjustScoresSubmitted={
-                                    onAdjustScoresSubmitted
-                                }
-                            />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <RemovePlayer
-                                gameState={gameState}
-                                onRemovePlayer={onRemovePlayer}
-                                myName={myName}
-                            />
-                        </Grid.Column>
-                    </Grid>
+                    {isMobile ? (
+                        <>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <AdjustScores
+                                    gameState={gameState}
+                                    onAdjustScoresSubmitted={
+                                        onAdjustScoresSubmitted
+                                    }
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    alignItems: "center",
+                                }}
+                            >
+                                <RemovePlayer
+                                    gameState={gameState}
+                                    onRemovePlayer={onRemovePlayer}
+                                    myName={myName}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <Grid columns={2}>
+                            <Grid.Column>
+                                <AdjustScores
+                                    gameState={gameState}
+                                    onAdjustScoresSubmitted={
+                                        onAdjustScoresSubmitted
+                                    }
+                                />
+                            </Grid.Column>
+                            <Grid.Column>
+                                <RemovePlayer
+                                    gameState={gameState}
+                                    onRemovePlayer={onRemovePlayer}
+                                    myName={myName}
+                                />
+                            </Grid.Column>
+                        </Grid>
+                    )}
                 </Grid.Column>
             </Grid>
         </>

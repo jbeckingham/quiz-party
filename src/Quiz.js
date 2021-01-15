@@ -142,6 +142,7 @@ const Quiz = ({ isMobile }) => {
                                                         gameState={gameState}
                                                         socket={socket}
                                                         myName={myName}
+                                                        isMobile={isMobile}
                                                     />
                                                 </>
                                             ) : (
