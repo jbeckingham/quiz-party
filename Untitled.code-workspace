@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "path": "../advent-calendar"
+        },
+        {
+            "path": "."
+        },
+        {
+            "path": "../music-round"
+        }
+    ]
+}

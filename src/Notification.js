@@ -16,7 +16,7 @@ const Notification = ({ socket }) => {
                 animation: "fly down",
                 type: "success",
                 description: name + " has finished the quiz!",
-                time: 20000,
+                time: 5000,
             });
         });
         socket.on("scoresAdjusted", (names, admin) => {
@@ -25,7 +25,7 @@ const Notification = ({ socket }) => {
                 type: "warning",
                 description:
                     admin + " has adjusted the scores of: " + names.join(", "),
-                time: 20000,
+                time: 5000,
             });
         });
         socket.on("playerRemoved", (name, admin) => {
@@ -33,7 +33,7 @@ const Notification = ({ socket }) => {
                 animation: "fly down",
                 type: "warning",
                 description: admin + " kicked out " + name + " from the quiz.",
-                time: 20000,
+                time: 5000,
             });
         });
         socket.on("scoresToggled", (value, admin) => {
@@ -44,7 +44,7 @@ const Notification = ({ socket }) => {
                 animation: "fly down",
                 type: "warning",
                 description: message,
-                time: 20000,
+                time: 5000,
             });
         });
     }, []);
