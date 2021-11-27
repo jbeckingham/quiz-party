@@ -19,16 +19,18 @@ const Notification = ({ socket }) => {
                 time: 5000,
             });
         });
-        socket.on("scoresAdjusted", (names, admin) => {
+        socket.on("scoresAdjusted", ({ playersAdjusted, admin }) => {
             toast({
                 animation: "fly down",
                 type: "warning",
                 description:
-                    admin + " has adjusted the scores of: " + names.join(", "),
+                    admin +
+                    " has adjusted the scores of: " +
+                    playersAdjusted.join(", "),
                 time: 5000,
             });
         });
-        socket.on("playerRemoved", (name, admin) => {
+        socket.on("playerRemoved", ({ name, admin }) => {
             toast({
                 animation: "fly down",
                 type: "warning",
@@ -36,8 +38,8 @@ const Notification = ({ socket }) => {
                 time: 5000,
             });
         });
-        socket.on("scoresToggled", (value, admin) => {
-            const message = value
+        socket.on("scoresToggled", ({ toggle, admin }) => {
+            const message = toggle
                 ? admin + " has just shown the scores"
                 : admin + " has just hidden the scores";
             toast({
